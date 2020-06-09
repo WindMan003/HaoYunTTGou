@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "提交订单",
+  "usingComponents": {
+    "divider": "/components/common/divider",
+    "price": "/components/common/price"
+  }
+}

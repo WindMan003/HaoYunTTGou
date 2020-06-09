@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "uni-popup": "/components/uni-popup/uni-popup",
+    "price": "/components/common/price",
+    "hx-number-box": "/components/uni-number-box/uni-number-box"
+  }
+}

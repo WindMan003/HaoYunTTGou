@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText": "",
+  "usingComponents": {
+    "uni-badge": "/components/uni-badge/uni-badge",
+    "merchant": "/components/merchant/merchant",
+    "notice": "/components/notice/notice",
+    "hx-number-box": "/components/uni-number-box/uni-number-box",
+    "price": "/components/common/price",
+    "goods-popup": "/components/cart/goods-popup",
+    "cart-popup": "/components/cart/cart-popup",
+    "create-cartid-popup": "/components/cart/create-cartid-popup"
+  }
+}
