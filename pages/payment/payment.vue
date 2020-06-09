@@ -1,0 +1,219 @@
+<template>
+	<view class="" style="background-color: #F5F5F5;" :style="'height:'+ windowHeight + 'px'">
+		<scroll-view scroll-y :style="'height:'+ scrollH + 'px'">
+			<view class="d-flex a-center j-center" style="height: 100rpx;">
+				<view class="d-flex a-center j-center rounded-10" style="width: 94%; background-color: #48D1CC; height: 80rpx;">
+					<view class="font-32">
+						桌子号：{{tableID}}
+					</view>
+				</view>
+			</view>
+			<view class="mt-1 d-flex a-center j-center">
+				<view class="rounded-10 d-flex flex-column bg-white pb-1" style="width: 94%">
+					<view class="ml-2 mr-2">
+						<view class="mt-1 d-flex flex-row a-center position-relative">
+							<view class="font-36 font-weight">{{merchantInfo.Name}}</view>
+							<view class="position-absolute border rounded-25 pl-2 pr-2" @click="continueAdd"
+							style="border-color: #48D1CC; color: #48D1CC; right: 10rpx;">
+								继续点餐
+							</view>
+						</view>
+						<view class="mt-2 border-bottom"></view>
+						<view class="d-flex flex-column">
+							<view class="mt-2" style="color: #48D1CC;">已点商品</view>
+							<block v-for="(item, index) in cartGoodsList" :key="index">
+								<view class="d-flex flex-row a-center mt-2">
+									<view class="font-30" style="width: 25%;">{{item.ProductName}}</view>
+									<view class="font-28" style="width: 45%;">{{getSpecStr(item)}}</view>
+									<view class="font-28" style="width: 15%;">x{{item.Count}}</view>
+									<view class="font-30 font-weight" style="width: 15%;">￥{{item.Price*item.Count}}</view>
+								</view>
+								
+							</block>
+							<view class="mt-2 border-bottom"></view>
+							<view class="position-relative mt-3" style="height: 80rpx;">
+								<view class="position-absolute" style="right: 30rpx;">
+									<view class="d-flex flex-row">
+										<view class="font-36">总价</view>
+										<view class="font-36 font-weight">￥{{getTotalPrice}}</view>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="d-flex a-center j-center mt-3" style="height: 100rpx;">
+				<view class="d-flex a-center flex-row rounded-10 bg-white position-relative" style="width: 94%; height: 100rpx;">
+					<view class="ml-3 font-32 font-weight" style="width: 20%;">
+						备注
+					</view>
+					<view class="d-flex flex-row a-center" style="width: 80%; height: 80rpx;" @click="gotoNote">
+						<view class="text-muted position-absolute p" style="right: 15rpx;">
+							<view class="">{{cartNote}}</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</scroll-view>
+		
+		<view class="w-100 bottom-0 d-flex flex-row position-absolute" style="height: 120rpx; margin-bottom: 40rpx; background-color: #696969;">
+			<view class="d-flex flex-row a-center ml-3">
+				<text class="font-36" style="color: #FFFFFF;">{{'¥'+getTotalPrice}}</text>
+			</view>
+		
+			<view class="position-absolute" style="right: 20rpx;" @click="sureOrder">
+				<view class="d-flex a-center j-center" style="height: 120rpx;">
+					<view class="pl-4 pr-4 p-1 font-36 rounded-50" style="color: #FFFFFF; background-color: #48D1CC;">
+						确认订单
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {mapState,mapGetters,mapActions,mapMutations} from "vuex"
+	
+	export default {
+		components:{
+		},
+		data() {
+			return {
+				scrollH:0,
+				isTouch:true,
+				cartID:0,
+				totalPrice: 0,
+				windowHeight: 0
+			}
+		},
+		onLoad: function(option){
+			uni.getSystemInfo({
+				success: (res) => {
+					this.windowHeight = res.windowHeight
+					this.scrollH = res.windowHeight - uni.upx2px(165)
+				}
+			})
+			
+			this.cartID = option.cartID
+		},
+		computed:{
+			...mapState({
+				tableID:state=>state.merchant.tableID,
+				cartGoodsList:state=>state.cart.cartGoodsList,
+				merchantID:state=>state.merchant.merchantID,
+				merchantStatus:state=>state.merchant.merchantStatus,
+				merchantInfo:state=>state.merchant.merchantInfo,
+				cartNote:state=>state.cart.cartNote
+			}),
+			...mapGetters([
+			]),
+			
+			getTotalPrice(){
+				var _self = this
+				var total = 0
+				var temp = _self.cartGoodsList
+				for (var i = 0; i < temp.length; i++) {
+					total = total + temp[i].Price * temp[i].Count
+				}
+				
+				_self.totalPrice = total
+				return total
+			}
+		},
+		methods:{
+			...mapMutations([
+				'clearCartList',
+				'updateOrderID'
+			]),
+			...mapActions([
+				'updateCartIdFunc'
+			]),
+			getSpecStr(list){
+				let tasteName = list.TasteName ? list.TasteName:''
+				let specName = list.SpecificationName ? list.SpecificationName:''
+			
+				if(tasteName && specName){
+					return `规格：${specName}  ${tasteName}`
+				}else if(specName){
+					return `规格：${specName}`
+				}else if(tasteName){
+					return `口味：${tasteName}`
+				}else{
+					return ''
+				}
+			},
+			continueAdd(){
+				uni.navigateBack({
+					delta: 1
+				})
+			},
+			sureOrder(){
+				var _self = this;
+				uni.showModal({
+				    title: '提示',
+				    content: '确认提交订单',
+				    success: function (res) {
+				        if (res.confirm) {
+				            _self.submitOrder()
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
+			},
+			submitOrder(){
+				let _self = this;
+				console.log("确认订单")
+				uni.showLoading({title: '订单确认中...'})
+				let note = '无'
+				if(_self.cartNote != '填写备注要求 >'){
+					note = _self.cartNote
+				}
+				let postData = {
+					MerchantID: _self.merchantID,
+					CartID: _self.cartID,
+					OrderID: 0,
+					UserNote: note
+				}
+				console.log(postData)
+				_self.$H.post('/api/order/SubmitOrder', postData, {
+					token:true
+				}).then(res=>{
+					uni.hideLoading()
+					console.log(res)
+					if(res.status == 0){
+						_self.updateOrderID(res.data)
+						_self.updateCartIdFunc(0)
+						_self.clearCartList()
+						if(_self.merchantStatus.IsMustPayFirst == 1){
+							// uni.redirectTo({
+							// 	url:'./payment-order?orderID=' + res.data
+							// })
+							uni.redirectTo({
+								url:'./payment-order?price='+_self.totalPrice+'&orderID='+res.data
+							})
+						}else{
+							uni.navigateBack({
+								animationType: 'pop-out',
+								animationDuration: 200
+							})
+						}
+					}else{
+						uni.showToast({title:res.Message, icon: 'none', duration:1000})
+					}
+				})
+			},
+			gotoNote(){
+				uni.navigateTo({
+					url:'../note/note'
+				})
+			}
+		}
+	}
+</script>
+
+<style>
+
+</style>
