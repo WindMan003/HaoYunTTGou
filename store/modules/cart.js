@@ -26,7 +26,12 @@ export default {
 			for (var i = 0; i < state.cartGoodsList.length; i++) {
 				total = total + state.cartGoodsList[i].Count*state.cartGoodsList[i].Price
 			}
-			return total
+
+			let numStr = total.toString()
+			let index = numStr.indexOf('.')
+			let result = Number(numStr.slice(0, index + 3))
+			
+			return result
 		},
 		getCartCount:(state)=>{
 			var count = 0

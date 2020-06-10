@@ -28,7 +28,7 @@
 	export default {
 		data() {
 			return {
-				isCeshi: false,
+				isCeshi: true,
 				isShenhe: true,
 				shenheVersion: '1.0.5',
 				

@@ -32,11 +32,11 @@
 			<text>使用代金币：</text>
 			<text class="main-text-color">{{ item.UseBuyCoin }}</text>
 		</view>
-		<view v-if="item.Status == 2 || item.Status == 3">
+		<view v-if="item.Status == 3">
 			<text>实付金额：</text>
 			<text class="main-text-color">{{ item.PayAmount }}</text>
 		</view>
-		<view style="width: 100%;" v-if="item.Status == 2 || item.Status == 3" class="text-right">
+		<view style="width: 100%;" v-if="item.Status == 1 || item.Status == 2" class="text-right">
 			<button size="mini" type="primary" @click="goToPay(item.PayAmount, item.ID)">
 				去付款
 			</button>
