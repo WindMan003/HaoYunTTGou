@@ -1,1 +1,0 @@
-<view class="{{['d-flex',priceSize]}}" style="color:#FF582B;"><text class="{{['a-self-start mr',unitSize]}}">¥</text><slot></slot></view>
