@@ -149,7 +149,7 @@
 							url:'../index/index'
 						})
 					}else{
-						uni.showToast({title:res.message, icon: 'none'})
+						_self.$Common.showToast(res)
 					}
 				})
 			},

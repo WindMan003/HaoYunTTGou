@@ -257,7 +257,7 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function _interopRequireDefault(
                 _self.clearCartList();
                 _self.$refs.popup.onTap();
               } else {
-                uni.showToast({ title: res.message, icon: 'none' });
+                _self.$Common.showToast(res);
               }
             });
           } else if (res.cancel) {
@@ -289,7 +289,7 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function _interopRequireDefault(
                   _websocket.default.closeSocketNet();
                   _self.$refs.popup.onTap();
                 } else {
-                  uni.showToast({ title: res.message, icon: 'none' });
+                  _self.$Common.showToast(res);
                 }
               });
             } else if (res.cancel) {

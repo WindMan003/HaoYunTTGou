@@ -116,7 +116,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
 
 
@@ -315,7 +315,7 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
             _this.initID(res.data.ID);
             _this.addOrSunGoodsCount(string);
           } else {
-            uni.showToast({ title: res.message, icon: 'none' });
+            _self.$Common.showToast(res);
           }
         });
       } else {
@@ -331,7 +331,6 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
         merchantID: this.merchantID });
 
     } }) };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ })
 

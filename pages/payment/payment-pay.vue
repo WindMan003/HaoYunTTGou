@@ -125,7 +125,7 @@
 					if(res.status == 0){
 						_self.payHandler(res.data)
 					}else{
-						uni.showToast({title:res.message, icon:'none', duration:1000})
+						_self.$Common.showToast(res)
 					}
 				})
 			},

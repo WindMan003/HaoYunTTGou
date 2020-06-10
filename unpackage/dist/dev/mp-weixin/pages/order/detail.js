@@ -279,7 +279,7 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function ownKeys(object, enumera
             url: '../index/index' });
 
         } else {
-          uni.showToast({ title: res.message, icon: 'none' });
+          _self.$Common.showToast(res);
         }
       });
     },

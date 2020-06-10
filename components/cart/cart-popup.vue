@@ -123,7 +123,7 @@
 				            		_self.clearCartList()
 				            		_self.$refs.popup.onTap()
 				            	}else{
-				            		uni.showToast({title:res.message, icon: 'none'})
+				            		_self.$Common.showToast(res)
 				            	}
 				            })
 				        } else if (res.cancel) {
@@ -155,7 +155,7 @@
 										websocket.closeSocketNet()
 					            		_self.$refs.popup.onTap()
 					            	}else{
-					            		uni.showToast({title:res.message, icon: 'none'})
+					            		_self.$Common.showToast(res)
 					            	}
 					            })
 					        } else if (res.cancel) {

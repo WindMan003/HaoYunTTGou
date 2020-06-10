@@ -197,7 +197,7 @@
 							this.initID(res.data.ID)
 							this.addOrSunGoodsCount(string)
 						}else{
-							uni.showToast({title:res.message, icon: 'none'})
+							_self.$Common.showToast(res)
 						}
 					})
 				}else{

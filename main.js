@@ -18,7 +18,6 @@ Vue.prototype.$Common = $Common
 import $Time from '@/common/lib/time.js';
 Vue.prototype.$Time = $Time
 
-// import $jweixin from '@/jweixin-module/index.js';
 
 const app = new Vue({
 	store,

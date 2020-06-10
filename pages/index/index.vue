@@ -342,7 +342,7 @@
 						this.cartIsOpen = false
 					}
 				}else{
-					uni.showToast({title:'您还没有点餐', icon: 'none' })
+					uni.showToast({title: '您还没有点餐', icon: 'none', duration: 1500})
 				}
 			},		
 			//创建购物车ID
@@ -355,7 +355,7 @@
 						url:'../payment/payment?cartID='+this.cartId
 					})
 				}else{
-					uni.showToast({title:'您还没有点餐', icon: 'none' })
+					uni.showToast({title: '您还没有点餐', icon: 'none', duration: 1500})
 				}
 
 			},

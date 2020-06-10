@@ -28,9 +28,9 @@
 	export default {
 		data() {
 			return {
-				isCeshi: true,
+				isCeshi: false,
 				isShenhe: true,
-				shenheVersion: '1.0.4',
+				shenheVersion: '1.0.5',
 				
 			}
 		},
@@ -60,7 +60,7 @@
 				// 没有接收到参数，使用默认参数
 				console.log('false')
 				this.updateMerchantID('1')
-				this.updateTableID('01')
+				this.updateTableID('1')
 			}
 			
 			this.getConfigData()
@@ -119,7 +119,7 @@
 					password: _self.$md5('wxshenhe'),
 				}).then(res=>{
 					console.log(res)
-					uni.showToast({title:res.message, icon: 'none', duration:1500})
+					_self.$Common.showToast(res)
 					if(res.status == 0){
 						//存储用户信息
 						_self.login(res.data)
@@ -168,7 +168,8 @@
 				if (!res.detail.iv) {
 					uni.showToast({
 						title: "您取消了授权,登录失败",
-						icon: "none"
+						icon: "none",
+						duration: 1500
 					});
 					return false;
 				}

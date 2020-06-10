@@ -520,7 +520,7 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function _interopRequireDefault(
           this.cartIsOpen = false;
         }
       } else {
-        uni.showToast({ title: '您还没有点餐', icon: 'none' });
+        uni.showToast({ title: '您还没有点餐', icon: 'none', duration: 1500 });
       }
     },
     //创建购物车ID
@@ -533,7 +533,7 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function _interopRequireDefault(
           url: '../payment/payment?cartID=' + this.cartId });
 
       } else {
-        uni.showToast({ title: '您还没有点餐', icon: 'none' });
+        uni.showToast({ title: '您还没有点餐', icon: 'none', duration: 1500 });
       }
 
     },

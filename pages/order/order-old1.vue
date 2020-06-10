@@ -61,7 +61,7 @@
 						_self.orderStatusList = res.data
 						_self.loadList()
 					}else{
-						uni.showToast({title:res.message, icon:'none', duration:1000})
+						_self.$Common.showToast(res)
 					}
 				})
 			},
@@ -79,7 +79,7 @@
 						_self.orderList = res.data
 						_self.updateOrderList(_self.orderList)
 					}else{
-						uni.showToast({title:res.message, icon:'none', duration:1000})
+						_self.$Common.showToast(res)
 					}
 				})
 			},

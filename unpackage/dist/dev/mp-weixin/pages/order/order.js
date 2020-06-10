@@ -326,7 +326,8 @@ var options = {
             _this4.$H.post('/api/Order/CancelOrder', postData, options).then(function (res) {
               uni.showToast({
                 title: res.data.message,
-                icon: 'none' });
+                icon: 'none',
+                duration: 1500 });
 
               //取消成功
               if (res.data.status == 0) {
@@ -361,7 +362,8 @@ var options = {
       this.loadList(function () {
         uni.showToast({
           icon: 'none',
-          title: '刷新成功' });
+          title: '刷新成功',
+          duration: 1500 });
 
         //刷新结束调用
         _this5.$refs.refresh.endAfter();

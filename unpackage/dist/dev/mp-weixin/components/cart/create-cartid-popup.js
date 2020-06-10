@@ -202,11 +202,7 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function _interopRequireDefault(
     joinCart: function joinCart() {
       var _self = this;
       if (_self.inputCartId == 0) {
-        uni.showToast({
-          title: '请输入4位购物车ID',
-          icon: 'none',
-          duration: 1000 });
-
+        uni.showToast({ title: '请输入4位购物车ID', icon: 'none', duration: 1500 });
       } else {
         uni.showLoading({ title: '加入中...' });
         _self.$H.post('/api/Merchant/SelectCart', {
@@ -227,7 +223,7 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function _interopRequireDefault(
             _self.inputCartId = '';
             _self.$refs.popup.onTap();
           } else {
-            uni.showToast({ title: res.message, icon: 'none' });
+            _self.$Common.showToast(res);
           }
         });
       }
@@ -252,7 +248,7 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function _interopRequireDefault(
           _self.inputCartId = '';
           _self.$refs.popup.onTap();
         } else {
-          uni.showToast({ title: res.message, icon: 'none' });
+          _self.$Common.showToast(res);
         }
       });
     },

@@ -88,7 +88,7 @@
 							}
 						}
 					}else{
-						uni.showToast({title:res.message, icon:'none', duration:1500})
+						_self.$Common.showToast(res)
 					}
 				});
 			},

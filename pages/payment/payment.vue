@@ -184,24 +184,24 @@
 					uni.hideLoading()
 					console.log(res)
 					if(res.status == 0){
+						_self.$Common.showToast(res)
 						_self.updateOrderID(res.data)
 						_self.updateCartIdFunc(0)
 						_self.clearCartList()
-						if(_self.merchantStatus.IsMustPayFirst == 1){
-							// uni.redirectTo({
-							// 	url:'./payment-order?orderID=' + res.data
-							// })
-							uni.redirectTo({
-								url:'./payment-order?price='+_self.totalPrice+'&orderID='+res.data
-							})
-						}else{
-							uni.navigateBack({
-								animationType: 'pop-out',
-								animationDuration: 200
-							})
-						}
+						setTimeout(()=>{
+							if(_self.merchantStatus.IsMustPayFirst == 1){
+								uni.redirectTo({
+									url:'./payment-order?price='+_self.totalPrice+'&orderID='+res.data
+								})
+							}else{
+								uni.navigateBack({
+									animationType: 'pop-out',
+									animationDuration: 200
+								})
+							}
+						}, res.messageShowTime)
 					}else{
-						uni.showToast({title:res.Message, icon: 'none', duration:1000})
+						_self.$Common.showToast(res)
 					}
 				})
 			},
