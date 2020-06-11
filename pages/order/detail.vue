@@ -134,8 +134,8 @@
 			addMore(orderID) {
 				var _self = this;
 				_self.$H.post('/api/Merchant/CreateShoppingCart',{
-					MerchantID:_self.merchantID,
-					TableID:_self.tableID
+					MerchantID: _self.merchantID,
+					TableID: _self.tableID
 				},{
 					token:true
 				}).then(res=>{

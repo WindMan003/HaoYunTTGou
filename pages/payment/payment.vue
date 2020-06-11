@@ -59,7 +59,7 @@
 		
 		<view class="w-100 bottom-0 d-flex flex-row position-absolute" style="height: 120rpx; margin-bottom: 40rpx; background-color: #696969;">
 			<view class="d-flex flex-row a-center ml-3">
-				<text class="font-36" style="color: #FFFFFF;">{{'¥'+getTotalPrice}}</text>
+				<text class="font-36" style="color: #FFFFFF;">{{'¥'+totalPrice}}</text>
 			</view>
 		
 			<view class="position-absolute" style="right: 20rpx;" @click="sureOrder">
@@ -105,7 +105,8 @@
 				merchantID:state=>state.merchant.merchantID,
 				merchantStatus:state=>state.merchant.merchantStatus,
 				merchantInfo:state=>state.merchant.merchantInfo,
-				cartNote:state=>state.cart.cartNote
+				cartNote:state=>state.cart.cartNote,
+				OrderID:state=>state.cart.OrderID,
 			}),
 			...mapGetters([
 			]),
@@ -171,10 +172,15 @@
 				if(_self.cartNote != '填写备注要求 >'){
 					note = _self.cartNote
 				}
+				// OrderID>0表示继续添加
+				let orderId = 0
+				if(_self.OrderID > 0){
+					orderId = _self.OrderID
+				}
 				let postData = {
 					MerchantID: _self.merchantID,
 					CartID: _self.cartID,
-					OrderID: 0,
+					OrderID: orderId,
 					UserNote: note
 				}
 				console.log(postData)
@@ -185,11 +191,11 @@
 					console.log(res)
 					if(res.status == 0){
 						_self.$Common.showToast(res)
-						_self.updateOrderID(res.data)
-						_self.updateCartIdFunc(0)
-						_self.clearCartList()
 						setTimeout(()=>{
-							if(_self.merchantStatus.IsMustPayFirst == 1){
+							_self.updateOrderID(res.data)
+							_self.updateCartIdFunc(0)
+							_self.clearCartList()
+							if(_self.merchantStatus.OpenPay == 1){
 								uni.redirectTo({
 									url:'./payment-order?price='+_self.totalPrice+'&orderID='+res.data
 								})
