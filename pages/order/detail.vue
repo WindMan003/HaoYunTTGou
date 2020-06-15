@@ -36,16 +36,17 @@
 			<text>实付金额：</text>
 			<text class="main-text-color">{{ item.PayAmount }}</text>
 		</view>
-		<view style="width: 100%;" v-if="item.Status == 1 || item.Status == 2" class="text-right">
-			<button size="mini" type="primary" @click="goToPay(item.PayAmount, item.ID)">
-				去付款
-			</button>
+		<view class="d-flex flex-row text-right" style="height: 90rpx;">
+			<view class="position-absolute" style="right: 20rpx;">
+				<button class="mr-2" v-if="item.Status == 0 || item.Status == 1" size="mini" type="primary"  @click="addMore(item.ID)">
+					继续添加
+				</button>
+				<button v-if="item.Status == 1 || item.Status == 2" size="mini" type="primary" @click="goToPay(item.PayAmount, item.ID)">
+					去付款
+				</button>
+			</view>
 		</view>
-		<view class="text-right" v-if="item.Status == 0 || item.Status == 1" @click="addMore(item.ID)">
-			<button size="mini" type="primary">
-				继续添加
-			</button>
-		</view>
+
 		<view class="border-bottom" style="padding-top:5rpx"></view>
 		<view class="p-1" v-for="(item, index) in productList" :key="index">
 			<text v-if="item.addRound > 0" class="font-weight font-md">

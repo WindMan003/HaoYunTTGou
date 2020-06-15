@@ -215,13 +215,14 @@
 					this.scrollH = res.windowHeight - uni.upx2px(75)
 				}
 			})
-			
+
 			this.initMerchantConfig()
 		},
 		computed:{
 			...mapState({
 				cartGoodsList:state=>state.cart.cartGoodsList,
 				cartId:state=>state.cart.cartId,
+				totalPrice:state=>state.cart.totalPrice,
 				merchantID:state=>state.merchant.merchantID,
 				tableID:state=>state.merchant.tableID,
 				isManyPeople:state=>state.merchant.isManyPeople,
@@ -230,8 +231,7 @@
 			...mapGetters([
 				'getGoodsCount',
 				'getGoodsTypeCount',
-				'getCartCount',
-				'totalPrice'
+				'getCartCount'
 			]),
 			getFilePaths(){
 				var temp = this.goodsList

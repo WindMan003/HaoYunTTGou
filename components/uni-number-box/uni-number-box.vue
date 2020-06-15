@@ -108,8 +108,6 @@
 					_self.$emit("createid")
 					return
 				}else if(!_self.isManyPeople && _self.cartId == 0){
-					console.log("tableID === ")
-					console.log(_self.tableID)
 					_self.$H.post('/api/Merchant/CreateShoppingCart',{
 						MerchantID:_self.merchantID,
 						TableID:_self.tableID

@@ -8,15 +8,11 @@
 		<view class="d-flex a-center j-center">
 			<view class="" style="width: 92%;">
 				<button type="primary" open-type="getUserInfo" @getuserinfo="wxUserInfo">微信登录</button>
-				<!-- <button type="primary" open-type="getUserInfo" @getuserinfo="wxUserInfo">微信登录</button> -->
 				<!-- #ifdef MP-WEIXIN -->
 				<view class="mt-3" v-if="isShenhe">
 					<button type="default" @click="shenheLogin">游客登录</button>
 				</view>
 				<!-- #endif -->
-				<view class="mt-3" v-if="isCeshi">
-					<button type="default" @click="shenheLogin">测试登录</button>
-				</view>
 			</view>
 		</view>
 	</view>
@@ -28,10 +24,8 @@
 	export default {
 		data() {
 			return {
-				isCeshi: true,
-				isShenhe: true,
-				shenheVersion: '1.0.5',
-				
+				isShenhe: false,
+				shenheVersion: '1.0.7',
 			}
 		},
 		computed:{

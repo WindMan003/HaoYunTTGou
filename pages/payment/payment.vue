@@ -26,7 +26,7 @@
 									<view class="font-30" style="width: 25%;">{{item.ProductName}}</view>
 									<view class="font-28" style="width: 45%;">{{getSpecStr(item)}}</view>
 									<view class="font-28" style="width: 15%;">x{{item.Count}}</view>
-									<view class="font-30 font-weight" style="width: 15%;">￥{{item.Price*item.Count}}</view>
+									<view class="font-30 font-weight" style="width: 15%;">￥{{getOneGoodTotalPrice(item)}}</view>
 								</view>
 								
 							</block>
@@ -64,7 +64,9 @@
 		
 			<view class="position-absolute" style="right: 20rpx;" @click="sureOrder">
 				<view class="d-flex a-center j-center" style="height: 120rpx;">
-					<view class="pl-4 pr-4 p-1 font-36 rounded-50" style="color: #FFFFFF; background-color: #48D1CC;">
+					<view class="pl-4 pr-4 p-1 font-36 rounded-50" 
+					:style="isClick ? 'background-color: #48D1CC':'background-color: #C8C7CC'"
+					style="color: #FFFFFF; background-color: #48D1CC;">
 						确认订单
 					</view>
 				</view>
@@ -85,7 +87,8 @@
 				isTouch:true,
 				cartID:0,
 				totalPrice: 0,
-				windowHeight: 0
+				windowHeight: 0,
+				isClick: true
 			}
 		},
 		onLoad: function(option){
@@ -126,7 +129,7 @@
 		methods:{
 			...mapMutations([
 				'clearCartList',
-				'updateOrderID'
+				'initTotalPrice'
 			]),
 			...mapActions([
 				'updateCartIdFunc'
@@ -166,6 +169,7 @@
 			},
 			submitOrder(){
 				let _self = this;
+				_self.isClick = false
 				console.log("确认订单")
 				uni.showLoading({title: '订单确认中...'})
 				let note = '无'
@@ -192,10 +196,11 @@
 					if(res.status == 0){
 						_self.$Common.showToast(res)
 						setTimeout(()=>{
-							_self.updateOrderID(res.data)
+							_self.isClick = true
 							_self.updateCartIdFunc(0)
+							_self.initTotalPrice(0)
 							_self.clearCartList()
-							if(_self.merchantStatus.OpenPay == 1){
+							if(_self.merchantStatus.IsMustPayFirst == 1){
 								uni.redirectTo({
 									url:'./payment-order?price='+_self.totalPrice+'&orderID='+res.data
 								})
@@ -207,9 +212,18 @@
 							}
 						}, res.messageShowTime)
 					}else{
+						_self.isClick = true
 						_self.$Common.showToast(res)
 					}
 				})
+			},
+			getOneGoodTotalPrice(m_item){
+				let total = m_item.Price*m_item.Count
+				let numStr = total.toString()
+				let index = numStr.indexOf('.')
+				let result = Number(numStr.slice(0, index + 3))
+				
+				return result
 			},
 			gotoNote(){
 				uni.navigateTo({

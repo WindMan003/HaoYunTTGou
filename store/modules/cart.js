@@ -9,6 +9,8 @@ export default {
 		nowChooseCount:0,
 		//当前选中商品总价格
 		chooseTotalPrice:0,
+		//商品总价
+		totalPrice: 0,
 		//购物车ID
 		cartId:0,
 		//订单ID
@@ -21,18 +23,18 @@ export default {
 		cartNote: '填写备注要求 >'
 	},
 	getters:{
-		totalPrice:(state)=>{
-			var total = 0
-			for (var i = 0; i < state.cartGoodsList.length; i++) {
-				total = total + state.cartGoodsList[i].Count*state.cartGoodsList[i].Price
-			}
+		// totalPrice:(state)=>{
+		// 	var total = 0
+		// 	for (var i = 0; i < state.cartGoodsList.length; i++) {
+		// 		total = total + state.cartGoodsList[i].Count*state.cartGoodsList[i].Price
+		// 	}
 
-			let numStr = total.toString()
-			let index = numStr.indexOf('.')
-			let result = Number(numStr.slice(0, index + 3))
+		// 	let numStr = total.toString()
+		// 	let index = numStr.indexOf('.')
+		// 	let result = Number(numStr.slice(0, index + 3))
 			
-			return result
-		},
+		// 	return result
+		// },
 		getCartCount:(state)=>{
 			var count = 0
 			for (var i = 0; i < state.cartGoodsList.length; i++) {
@@ -126,6 +128,9 @@ export default {
 		},
 		initCartNote(state, cartNote){
 			state.cartNote = cartNote
+		},
+		initTotalPrice(state, totalPrice){
+			state.totalPrice = totalPrice
 		}
 	},
 	actions:{
@@ -177,6 +182,7 @@ export default {
 					uni.hideLoading()
 					console.log(res)
 					if(res.status == 0){
+						context.commit('initTotalPrice', res.data.TotalPrice)
 						context.commit('updateCartGoodsList', res.data.Products)
 						context.commit('updateSpecDate', {
 							"goodsId":value.nameid,

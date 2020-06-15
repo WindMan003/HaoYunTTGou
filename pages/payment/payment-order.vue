@@ -17,6 +17,7 @@
 			this.price = option.price
 			this.orderID = option.orderID
 			
+			
 			this.gotoPayBill(this.orderID, this.price)
 		},
 		methods: {
@@ -35,7 +36,7 @@
 				}).then(res=>{	
 					console.log(res)
 					uni.hideLoading()
-					if(res.status == 0 || res.status == 20){
+					if(res.status == 0){
 						uni.redirectTo({
 							url:'./payment-pay?price='+m_price+'&orderID='+m_orderID
 						})

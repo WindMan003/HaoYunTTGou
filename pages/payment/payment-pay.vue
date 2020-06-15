@@ -47,6 +47,7 @@
 		<view class="w-100 bottom-0 d-flex flex-row position-absolute" style="height: 150rpx; margin-bottom: 150rpx;">
 			<view class="w-100 d-flex a-center j-center mt-3 position-absolute">
 				<view class="font-38 rounded-50 pt-1 pb-1 border text-center" 
+				:style="isClick ? 'background-color: #48D1CC':'background-color: #C8C7CC'"
 				style="width: 80%; color: #FFFFFF; background-color: #48D1CC;" @click="gotoPay">确认支付{{price}}元</view>
 			</view>
 		</view>
@@ -66,7 +67,8 @@
 				defaultWx:true,
 				defaultAli:false,
 				price:0,
-				orderID:0
+				orderID:0,
+				isClick: true
 			}
 		},
 		onLoad(option) {
@@ -109,11 +111,12 @@
 			},
 			gotoPay(){
 				var _self = this
+				_self.isClick = false
 				if(this.payTypeName == ''){
 					uni.showToast({title:'请选择支付方式', icon:'none', duration:1500})
 					return
 				}
-				uni.showLoading({title:'', mask:true})
+				uni.showLoading({title:'提交支付中...', mask:true})
 				console.log("orderID == " + _self.orderID)
 				_self.$H.post('/api/pay/CreateWxOrder',{
 					OrderID:_self.orderID
@@ -122,6 +125,7 @@
 				}).then(res=>{	
 					console.log(res)
 					uni.hideLoading()
+					_self.isClick = true
 					if(res.status == 0){
 						_self.payHandler(res.data)
 					}else{

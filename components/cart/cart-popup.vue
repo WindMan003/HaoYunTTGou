@@ -23,7 +23,7 @@
 									{{getSpecStr(item)}}
 								</view>
 								<view class="font-weight">
-									<price>{{item.Price*item.Count}}</price>
+									<price>{{getOneGoodTotalPrice(item)}}</price>
 								</view>
 								<view class="position-absolute" style="right: 10rpx; bottom: 10rpx; z-index: 16;">
 									<hx-number-box :value="item.Count" :nameid="item.ProductID" 
@@ -215,6 +215,14 @@
 				        }
 				    }
 				});
+			},
+			getOneGoodTotalPrice(m_item){
+				let total = m_item.Price*m_item.Count
+				let numStr = total.toString()
+				let index = numStr.indexOf('.')
+				let result = Number(numStr.slice(0, index + 3))
+				
+				return result
 			}
 		}
 	}
