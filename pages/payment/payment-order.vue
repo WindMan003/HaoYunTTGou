@@ -38,7 +38,7 @@
 					uni.hideLoading()
 					if(res.status == 0){
 						uni.redirectTo({
-							url:'./payment-pay?price='+m_price+'&orderID='+m_orderID
+							url:'./payment-pay?price='+res.data.PayAmount+'&orderID='+m_orderID
 						})
 					}else{
 						uni.showModal({
