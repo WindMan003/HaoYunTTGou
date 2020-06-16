@@ -8,7 +8,7 @@ export default {
 		
 		appConfig:false,
 		signkey:'_qwe57812HGGas_iii87idFF425',
-		isshenhe: false
+		isshenhe: true
 	},
 	mutations:{
 		// 初始化数据

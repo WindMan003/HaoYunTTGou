@@ -25,7 +25,7 @@
 		data() {
 			return {
 				isShenhe: false,
-				shenheVersion: '1.0.7',
+				shenheVersion: '1.0.9',
 			}
 		},
 		computed:{
@@ -101,6 +101,7 @@
 						}else{
 							console.log('no-shenhe')
 							_self.isShenhe = false
+							_self.initIsShenhe(false)
 						}
 					}
 				})

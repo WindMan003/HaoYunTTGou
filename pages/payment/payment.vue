@@ -11,7 +11,7 @@
 			<view class="mt-1 d-flex a-center j-center">
 				<view class="rounded-10 d-flex flex-column bg-white pb-1" style="width: 94%">
 					<view class="ml-2 mr-2">
-						<view class="mt-1 d-flex flex-row a-center position-relative">
+						<view class="mt-1 d-flex flex-row a-center position-relative" v-if="!isshenhe">
 							<view class="font-36 font-weight">{{merchantInfo.Name}}</view>
 							<view class="position-absolute border rounded-25 pl-2 pr-2" @click="continueAdd"
 							style="border-color: #48D1CC; color: #48D1CC; right: 10rpx;">
@@ -89,6 +89,7 @@
 				totalPrice: 0,
 				windowHeight: 0,
 				isClick: true
+				
 			}
 		},
 		onLoad: function(option){
@@ -110,6 +111,7 @@
 				merchantInfo:state=>state.merchant.merchantInfo,
 				cartNote:state=>state.cart.cartNote,
 				OrderID:state=>state.cart.OrderID,
+				isshenhe:state=>state.user.isshenhe
 			}),
 			...mapGetters([
 			]),
@@ -200,9 +202,9 @@
 							_self.updateCartIdFunc(0)
 							_self.initTotalPrice(0)
 							_self.clearCartList()
-							if(_self.merchantStatus.IsMustPayFirst == 1){
+							if(res.data.IsMustPayfirst == 1){
 								uni.redirectTo({
-									url:'./payment-order?price='+_self.totalPrice+'&orderID='+res.data
+									url:'./payment-order?price='+_self.totalPrice+'&orderID='+res.data.OrderID
 								})
 							}else{
 								uni.navigateBack({
