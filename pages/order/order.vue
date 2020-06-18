@@ -183,6 +183,7 @@ export default {
 			this.changeTab(e.detail.current);
 		},
 		cancelOrder(orderID) {
+			var _self = this
 			uni.showModal({
 				title: '提示',
 				content: '确认是否取消？',
@@ -191,21 +192,17 @@ export default {
 						let postData = {
 							orderID: orderID
 						};
-						this.$H.post('/api/Order/CancelOrder', postData, options).then(res => {
-							uni.showToast({
-								title: res.data.message,
-								icon: 'none',
-								duration: 1500
-							});
-							//取消成功
-							if (res.data.status == 0) {
-								let lists = this.listItems[this.tabIndex].list;
+						_self.$H.post('/api/Order/CancelOrder', postData, options).then(res => {
+							console.log(res)
+							if (res.status == 0) {
+								//取消成功
+								let lists = _self.listItems[_self.tabIndex].list;
 								//找到当前数据对象
 								for (var i = 0; i < lists.length; i++) {
 									let curObj = lists[i];
 									if (curObj.ID == orderID) {
-										this.updateCartId(0)
-										this.updateOrderID(0)
+										_self.updateCartId(0)
+										_self.updateOrderID(0)
 										//用户取消
 										curObj.Status = 4;
 										curObj.StatusName = '用户取消';
