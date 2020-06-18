@@ -204,7 +204,7 @@
 							_self.clearCartList()
 							if(res.data.IsMustPayfirst == 1){
 								uni.redirectTo({
-									url:'./payment-order?price='+_self.totalPrice+'&orderID='+res.data.OrderID
+									url:'./payment-pay?price='+_self.totalPrice+'&orderID='+res.data.OrderID
 								})
 							}else{
 								uni.navigateBack({

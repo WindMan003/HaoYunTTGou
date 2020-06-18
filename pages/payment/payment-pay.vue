@@ -48,7 +48,7 @@
 			<view class="w-100 d-flex a-center j-center mt-3 position-absolute">
 				<view class="font-38 rounded-50 pt-1 pb-1 border text-center" 
 				:style="isClick ? 'background-color: #48D1CC':'background-color: #C8C7CC'"
-				style="width: 80%; color: #FFFFFF; background-color: #48D1CC;" @click="gotoPay">确认支付{{price}}元</view>
+				style="width: 80%; color: #FFFFFF; background-color: #48D1CC;" @click="payBill">确认支付{{price}}元</view>
 			</view>
 		</view>
 	</view>
@@ -63,11 +63,11 @@
 		},
 		data() {
 			return {
-				payTypeName:'wxpay',
-				defaultWx:true,
-				defaultAli:false,
-				price:0,
-				orderID:0,
+				payTypeName: 'wxpay',
+				defaultWx: true,
+				defaultAli: false,
+				price: 0,
+				orderID: 0,
 				isClick: true
 			}
 		},
@@ -87,6 +87,28 @@
 			]),
 			...mapActions([
 			]),
+			payBill(){
+				let _self = this
+				uni.showLoading({
+					title: '结算中...'
+				})
+				let postData = {
+					OrderID: _self.orderID,
+					PayType: 2,
+					PayChannel: 2
+				}
+				_self.$H.post('/api/order/PayBill', postData, {
+					token:true
+				}).then(res=>{	
+					console.log(res)
+					uni.hideLoading()
+					if(res.status == 0){
+						_self.goToPay()
+					}else{
+						_self.$Common.showToast(res)
+					}
+				})
+			},
 			choosePayTypeWx(e){
 				var typeName = e.detail.value
 				if(typeName.length > 0){
@@ -109,10 +131,10 @@
 				}
 				console.log(this.payTypeName)
 			},
-			gotoPay(){
+			goToPay(){
 				var _self = this
 				_self.isClick = false
-				if(this.payTypeName == ''){
+				if(_self.payTypeName == ''){
 					uni.showToast({title:'请选择支付方式', icon:'none', duration:1500})
 					return
 				}

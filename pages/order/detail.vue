@@ -41,7 +41,7 @@
 				<button class="mr-2" v-if="item.Status == 0 || item.Status == 1" size="mini" type="primary"  @click="addMore(item.ID)">
 					继续添加
 				</button>
-				<button v-if="item.Status == 1 || item.Status == 2" size="mini" type="primary" @click="goToPay(item.PayAmount, item.ID)">
+				<button v-if="item.Status == 1 || item.Status == 2" size="mini" type="primary" @click="goToPay(item)">
 					去付款
 				</button>
 			</view>
@@ -154,9 +154,14 @@
 					}
 				})
 			},
-			goToPay(m_price, m_orderID) {
+			goToPay(m_item) {
+				let m_price = m_item.Amount
+				if(m_item.Status == 2){
+					m_price = m_item.PayAmount
+					console.log(m_price)
+				}
 				uni.navigateTo({
-					url:'../payment/payment-order?price='+m_price+'&orderID='+m_orderID,
+					url:'../payment/payment-pay?price='+m_price+'&orderID='+m_item.ID,
 				})
 			}
 		}

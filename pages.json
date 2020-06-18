@@ -49,10 +49,6 @@
             "path" : "pages/note/note",
             "style" : {}
         }
-        ,{
-            "path" : "pages/payment/payment-order",
-            "style" : {}
-        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
