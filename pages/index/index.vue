@@ -352,7 +352,7 @@
 			toSettlement(){
 				if(this.cartGoodsList.length > 0){
 					uni.navigateTo({
-						url:'../payment/payment?cartID='+this.cartId
+						url:'../payment/payment?cartID=' + this.cartId + '&totalPrice=' + this.totalPrice
 					})
 				}else{
 					uni.showToast({title: '您还没有点餐', icon: 'none', duration: 1500})

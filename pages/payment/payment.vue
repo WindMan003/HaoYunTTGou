@@ -18,7 +18,6 @@
 								继续点餐
 							</view>
 						</view>
-						<view class="mt-2 border-bottom"></view>
 						<view class="d-flex flex-column">
 							<view class="mt-2" style="color: #48D1CC;">已点商品</view>
 							<block v-for="(item, index) in cartGoodsList" :key="index">
@@ -26,7 +25,7 @@
 									<view class="font-30" style="width: 25%;">{{item.ProductName}}</view>
 									<view class="font-28" style="width: 45%;">{{getSpecStr(item)}}</view>
 									<view class="font-28" style="width: 15%;">x{{item.Count}}</view>
-									<view class="font-30 font-weight" style="width: 15%;">￥{{getOneGoodTotalPrice(item)}}</view>
+									<view class="font-30 font-weight" style="width: 15%;">{{'¥'+getOneGoodTotalPrice(item)}}</view>
 								</view>
 								
 							</block>
@@ -35,11 +34,22 @@
 								<view class="position-absolute" style="right: 30rpx;">
 									<view class="d-flex flex-row">
 										<view class="font-36">总价</view>
-										<view class="font-36 font-weight">￥{{getTotalPrice}}</view>
+										<view class="font-36 font-weight" style="color: #FF582B;">{{'¥'+totalPrice}}</view>
 									</view>
 								</view>
 							</view>
 						</view>
+					</view>
+				</view>
+			</view>
+			<view class="d-flex a-center j-center mt-3" style="height: 100rpx;" v-if="merchantStatus.IsNeedServiceFee == 1 && !isshenhe">
+				<view class="d-flex a-center flex-row rounded-10 bg-white position-relative" style="width: 94%; height: 100rpx;">
+					<view class="ml-3 font-32 font-weight" style="width: 40%;">
+						用餐人数
+					</view>
+					<view class="d-flex flex-row a-center j-end p font-30" style="width: 60%;">
+						<input style="width: 100rpx;" type="number" placeholder="请输入" @blur="userCountInput"/>
+						<view class="ml-1 mr-2">人</view>
 					</view>
 				</view>
 			</view>
@@ -49,7 +59,7 @@
 						备注
 					</view>
 					<view class="d-flex flex-row a-center" style="width: 80%; height: 80rpx;" @click="gotoNote">
-						<view class="text-muted position-absolute p" style="right: 15rpx;">
+						<view class="position-absolute p" style="right: 15rpx;">
 							<view class="">{{cartNote}}</view>
 						</view>
 					</view>
@@ -86,10 +96,11 @@
 				scrollH:0,
 				isTouch:true,
 				cartID:0,
-				totalPrice: 0,
 				windowHeight: 0,
-				isClick: true
-				
+				isClick: true,
+				userCount: 0,
+				oldPrice: 0,
+				totalPrice: 0
 			}
 		},
 		onLoad: function(option){
@@ -101,6 +112,8 @@
 			})
 			
 			this.cartID = option.cartID
+			this.totalPrice = Number(option.totalPrice)
+			this.oldPrice = this.totalPrice
 		},
 		computed:{
 			...mapState({
@@ -115,18 +128,6 @@
 			}),
 			...mapGetters([
 			]),
-			
-			getTotalPrice(){
-				var _self = this
-				var total = 0
-				var temp = _self.cartGoodsList
-				for (var i = 0; i < temp.length; i++) {
-					total = total + temp[i].Price * temp[i].Count
-				}
-				
-				_self.totalPrice = total
-				return total
-			}
 		},
 		methods:{
 			...mapMutations([
@@ -136,6 +137,18 @@
 			...mapActions([
 				'updateCartIdFunc'
 			]),
+			userCountInput(e){
+				this.userCount = e.detail.value
+				if(this.userCount < 1){
+					uni.showToast({title: '请输入正确的用餐人数', icon: 'none', duration: 1500})
+					return
+				}
+				if(this.oldPrice != this.totalPrice){
+					this.totalPrice = this.oldPrice
+				}
+				let temp = this.merchantStatus.ServiceUnitPrice * this.userCount
+				this.totalPrice = this.totalPrice + temp
+			},
 			getSpecStr(list){
 				let tasteName = list.TasteName ? list.TasteName:''
 				let specName = list.SpecificationName ? list.SpecificationName:''
@@ -171,6 +184,10 @@
 			},
 			submitOrder(){
 				let _self = this;
+				if(_self.merchantStatus.IsNeedServiceFee == 1 && _self.userCount < 1){
+					uni.showToast({title: '请输入正确的用餐人数', icon: 'none', duration: 1500})
+					return
+				}
 				_self.isClick = false
 				console.log("确认订单")
 				uni.showLoading({title: '订单确认中...'})
@@ -187,6 +204,7 @@
 					MerchantID: _self.merchantID,
 					CartID: _self.cartID,
 					OrderID: orderId,
+					UserCount: _self.userCount,
 					UserNote: note
 				}
 				console.log(postData)

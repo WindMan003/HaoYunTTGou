@@ -10,15 +10,23 @@
 				<text class="main-text-color">{{ item.StatusName }}</text>
 			</view>
 		</view>
+		<view class="d-flex flex-row" v-if="item.IsNeedServiceFee == 1">
+			<view style="width: 50%;">
+				<text>服务费：</text>
+				<text>{{ item.ServiceUnitPrice }}元/人</text>
+			</view>
+			<view style="width: 50%;">
+				<text>用餐人数：</text>
+				<text class="">{{ item.UserCount }}</text>
+			</view>
+		</view>
 		<view>
-			<view>
-				<text>订单金额：</text>
-				<text class="main-text-color">{{ item.Amount }}</text>
-			</view>
-			<view v-if="item.UserNote != ''">
-				<text>备注：</text>
-				<text>{{ item.UserNote }}</text>
-			</view>
+			<text>订单金额：</text>
+			<text style="color: #FF582B;">{{ '￥'+item.Amount }}</text>
+		</view>
+		<view v-if="item.UserNote != ''">
+			<text>备注：</text>
+			<text>{{ item.UserNote }}</text>
 		</view>
 		<view v-if="item.UseVoucherAmount > 0">
 			<text>使用代金券：</text>
@@ -76,6 +84,14 @@
 				</view>
 			</view>
 			<view class="border-bottom" style="padding-top:5rpx"></view>
+		</view>
+		<view v-if="item.IsNeedServiceFee == 1">
+			<view class="d-flex flex-row a-center j-end mr-5 mt">{{'￥'+(item.Amount-item.ServiceFee)}}</view>
+			<view class="d-flex flex-row a-center j-end mr-5 mt">{{'服务费：￥'+item.ServiceFee}}</view>
+		</view>
+		<view class="d-flex flex-row a-center j-end mr-5 mt" >
+			<view class="">总价：</view>
+			<view style="color: #FF582B;">{{'￥'+item.Amount}}</view>
 		</view>
 	</view>
 </template>
