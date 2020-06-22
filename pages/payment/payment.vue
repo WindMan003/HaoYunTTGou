@@ -27,8 +27,11 @@
 									<view class="font-28" style="width: 15%;">x{{item.Count}}</view>
 									<view class="font-30 font-weight" style="width: 15%;">{{'¥'+getOneGoodTotalPrice(item)}}</view>
 								</view>
-								
 							</block>
+							<view class="d-flex flex-row a-center mt-2" v-if="getServiceAmount > 0">
+								<view class="font-30" style="width: 85%;">服务费</view>
+								<view class="font-30 font-weight" style="width: 15%;">{{'¥'+getServiceAmount}}</view>
+							</view>
 							<view class="mt-2 border-bottom"></view>
 							<view class="position-relative mt-3" style="height: 80rpx;">
 								<view class="position-absolute" style="right: 30rpx;">
@@ -128,6 +131,9 @@
 			}),
 			...mapGetters([
 			]),
+			getServiceAmount(){
+				return this.merchantStatus.ServiceUnitPrice * this.userCount
+			}
 		},
 		methods:{
 			...mapMutations([
