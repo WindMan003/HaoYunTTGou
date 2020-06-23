@@ -9,16 +9,11 @@
 						{{item.name}}
 					</text>
 				</view>
-				<!-- <view class="border font-28 pl-1 pr-1 position-absolute text-center" 
-				style="border-color: #EE7621; color: #EE7621; right: 15rpx; bottom: 10rpx; border-radius: 8rpx;"
-				@click="onOrderList">
-					我的订单
-				</view> -->
 			</view>
 		</view>
 		
 		
-		<swiper :duration="150" :style="'height:'+(scrollH)+'px;'" :current="tabIndex" @change="onChangeTab">
+		<swiper :duration="150" :style="'height:'+(swiperH)+'px;'" :current="tabIndex" @change="onChangeTab">
 			<swiper-item class="swiper-item">
 				<!-- 左侧分类导航 -->
 				<view class="d-flex flex-row w-100">
@@ -37,7 +32,7 @@
 					</scroll-view>
 					<!-- 右侧子导航 -->
 					<scroll-view :croll-with-animation="true" scroll-y style="left: 24%; width: 76%;"
-					:style="'height:'+(scrollH-45)+'px;'" @scroll="asideScroll" :scroll-top="tabScrollTop">
+					:style="'height:'+scrollH+'px;'" @scroll="asideScroll" :scroll-top="tabScrollTop">
 						<view class="ml-3 mt" v-for="(item,index) in categoryList" :key="index"
 						:id="'goodsBox'+item.indexId">
 							<view class="font-32 bg-color-w position-sticky" style="height: 70rpx; z-index: 18; top: 0;">
@@ -94,47 +89,46 @@
 				</view>
 				
 				<!-- 购物车 -->
-				<block v-if="!isshenhe">
-					<view class="main-bg-color-w d-flex flex-row a-center position-relative" style="height: 90rpx;" :style="'z-index:'+zindex">
-						<view class="d-flex flex-row a-center" style="width: 80%;"  @click="openCartDetail">
-							<view class="ml-3 position-relative" style="width: 80rpx;">
-								<image src="/static/store/cart.png" mode="widthFix"></image>
-								<view class="position-absolute" style="right: -15rpx; top: -5rpx;" v-if="getCartCount>0">
-									<uni-badge :text="getCartCount" type="error"></uni-badge>
-								</view>
-							</view>
-										
-							<view class="ml-4" v-if="isManyPeople && cartId != 0">
-								<view class="d-flex flex-row a-center">
-									<text class="font-30">购物车ID:</text>
-									<text class="font-30" style="color: #FF582B;">{{cartId}}</text>
-								</view>
-							</view>
-							
-							<view class="ml-4" v-if="totalPrice > 0">
-								<view class="d-flex flex-row a-center">
-									<text class="font-30">价格:</text>
-									<text class="font-30" style="color: #FF582B;">￥{{totalPrice}}</text>
-								</view>
+				<view class="w-100 main-bg-color-w d-flex flex-row a-center position-absolute" style="height: 100rpx; margin-bottom: 0;" 
+				:style="'z-index:'+zindex" v-if="!isshenhe">
+					<view class="d-flex flex-row a-center" style="width: 80%;"  @click="openCartDetail">
+						<view class="ml-3" style="width: 80rpx;">
+							<image src="/static/store/cart.png" mode="widthFix"></image>
+							<view class="position-absolute" style="right: -15rpx; top: -5rpx;" v-if="getCartCount>0">
+								<uni-badge :text="getCartCount" type="error"></uni-badge>
 							</view>
 						</view>
-
-						<view class="position-absolute" style="height: 90rpx; right: 0;" 
-						@click="toSettlement" v-if="!isManyPeople || cartId != 0"
-						:style="totalPrice > 0 ? 'background-color: #FFA500':'background-color: #C0C0C0;'">
-							<view class="d-flex a-center pl-2 pr-2 font-32 font-weight" style="height: 90rpx; color: #FFFFFF;">
-								去结算>>
+									
+						<view class="ml-3" v-if="isManyPeople && cartId != 0">
+							<view class="d-flex flex-row a-center">
+								<text class="font-30">购物车ID:</text>
+								<text class="font-30" style="color: #FF582B;">{{cartId}}</text>
 							</view>
 						</view>
 						
-						<view class="position-absolute" style="height: 90rpx; background-color: #FFA500; right: 0;"
-						@click="openCreateCartId" v-if="isManyPeople && cartId == 0">
-							<view class="d-flex a-center pl-2 pr-2 font-32 font-weight" style="height: 90rpx;">
-								创建/加入购物车
+						<view class="ml-2" v-if="totalPrice > 0">
+							<view class="d-flex flex-row a-center">
+								<text class="font-30">价格:</text>
+								<text class="font-30" style="color: #FF582B;">￥{{totalPrice}}</text>
 							</view>
 						</view>
 					</view>
-				</block>
+
+					<view class="position-absolute" style="height: 100rpx; right: 0;" 
+					@click="toSettlement" v-if="!isManyPeople || cartId != 0"
+					:style="totalPrice > 0 ? 'background-color: #FFA500':'background-color: #C0C0C0;'">
+						<view class="d-flex a-center pl-2 pr-2 font-32 font-weight" style="height: 100rpx; color: #FFFFFF;">
+							去结算>>
+						</view>
+					</view>
+					
+					<view class="position-absolute" style="height: 100rpx; background-color: #FFA500; right: 0;"
+					@click="openCreateCartId" v-if="isManyPeople && cartId == 0">
+						<view class="d-flex a-center pl-2 pr-2 font-32 font-weight" style="height: 100rpx;">
+							创建/加入购物车
+						</view>
+					</view>
+				</view>
 				<!-- 商品规格层 -->
 				<goods-popup ref="goodspopup" @createid="openCreateCartId"></goods-popup>
 				
@@ -190,7 +184,8 @@
 				zindex:90,
 				showCartDrawer:false,
 				showPopup:false,
-				scrollH:500, //可滑动区域高度
+				swiperH: 0, //可滑动区域高度
+				scrollH: 0,
 				tabIndex:0,
 				currentId:1,
 				categoryList:[],
@@ -212,7 +207,11 @@
 			//获取可视区域高度
 			uni.getSystemInfo({
 				success: (res) => {
-					this.scrollH = res.windowHeight - uni.upx2px(75)
+					this.swiperH = res.windowHeight - uni.upx2px(80)
+					this.scrollH = res.windowHeight - uni.upx2px(180)
+					if(this.isshenhe){
+						this.scrollH = this.swiperH
+					}
 				}
 			})
 
@@ -310,9 +309,9 @@
 					if(res.status == 0){
 						_self.updateMerchantInfo(res.data)
 						//初始化商家信息
-						_self.$refs.merchantRef.initMerchantInfo(_self.scrollH)
+						_self.$refs.merchantRef.initMerchantInfo(_self.swiperH)
 						//初始化公告信息
-						_self.$refs.noticeRef.initNoticeList(_self.scrollH)
+						_self.$refs.noticeRef.initNoticeList(_self.swiperH)
 					}
 				})
 			},

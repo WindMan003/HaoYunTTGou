@@ -25,7 +25,7 @@
 		data() {
 			return {
 				isShenhe: false,
-				shenheVersion: '1.0.9',
+				shenheVersion: '1.0.10',
 			}
 		},
 		computed:{

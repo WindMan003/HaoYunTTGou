@@ -138,7 +138,6 @@
 		methods:{
 			...mapMutations([
 				'clearCartList',
-				'initTotalPrice'
 			]),
 			...mapActions([
 				'updateCartIdFunc'
@@ -224,7 +223,6 @@
 						setTimeout(()=>{
 							_self.isClick = true
 							_self.updateCartIdFunc(0)
-							_self.initTotalPrice(0)
 							_self.clearCartList()
 							if(res.data.IsMustPayfirst == 1){
 								uni.redirectTo({

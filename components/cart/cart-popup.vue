@@ -94,7 +94,6 @@
 				'clearCartList',
 				'updateCartId',
 				'updateOrderID',
-				'initTotalPrice'
 			]),
 			...mapActions([
 				'operationCartGoods'
@@ -120,9 +119,8 @@
 				            	token:true
 				            }).then(res=>{
 				            	console.log(res)
-				            	if(res.status === 0){
+				            	if(res.status == 0){
 				            		_self.clearCartList()
-									_self.initTotalPrice(0)
 				            		_self.$refs.popup.onTap()
 				            	}else{
 				            		_self.$Common.showToast(res)

@@ -108,12 +108,16 @@ export default {
 		//清空购物车数据
 		clearCartList(state){
 			state.cartGoodsList = []
+			state.totalPrice = 0
 		},
 		updateAllGoodsList(state, list){
 			state.allGoodsList = list
 		},
 		updateCartId(state, cartId){
 			state.cartId = cartId
+			if(cartId == 0){
+				state.totalPrice = 0
+			}
 		},
 		initID(state, ID){
 			state.ID = ID
