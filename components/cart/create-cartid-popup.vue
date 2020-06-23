@@ -4,32 +4,38 @@
 			<view class="w-100 border-bottom text-center font-36 font-weight mt-2" style="height: 90rpx">
 				加入/创建购物车
 			</view>
-
-			<view class="text-center mt-1 font-28 w-100">
-				加入其他人的购物车
-			</view>
-			<view class="d-flex j-center mt-2">
+			
+			<view class="d-flex j-center mt-3">
 				<view class="p-1" style="width: 35%;">
-					<input class="text-center border-bottom font-28" type="number" confirm-type='done' 
-					focus="true" value="" placeholder="输入4位购物车ID" maxlength="4" @input="cartIdInput"/>
+					<input class="text-center border-bottom font-28" type="number" :value="inputCartId"
+					 placeholder="输入4位购物车ID" maxlength="4" @input="cartIdInput"/>
 				</view>
 				
-				<view class="border text-center font-28 font-weight p"
+<!-- 				<view class="border text-center font-28 font-weight p"
 				style="background: #FFA500; border-radius: 10rpx; width: 160rpx; color: #FFFFFF;"
 				@click="joinCart">
 					点击加入
-				</view>
+				</view> -->
 			</view>
 			
-			<view class="ml-3 mt-3 font-28 w-100 text-center">
+			<view class="text-center mt-3 font-24 w-100" style="color: red;">
+				*加入购物车,可实现多人共同点餐！
+			</view>
+<!-- 			<view class="ml-3 mt-3 font-28 w-100 text-center">
 				tips:或者点击创建按钮创建自己的购物车
-			</view>
+			</view> -->
 			
-			<view class="d-flex a-center j-center mt-2">
-				<view class="border text-center font-40 font-weight p-1" 
+			<view class="d-flex a-center j-center mt-5 flex-row j-sa">
+				<view class="border text-center font-36 font-weight p-1" 
 				style="background: #FFA500; border-radius: 10rpx; width: 200rpx; color: #FFFFFF;"
 				@click="createCart">
 					创建
+				</view>
+				
+				<view class="border text-center font-36 font-weight p-1"
+				style="background: #FFA500; border-radius: 10rpx; width: 200rpx; color: #FFFFFF;"
+				@click="joinCart">
+					加入
 				</view>
 			</view>
 		</view>
