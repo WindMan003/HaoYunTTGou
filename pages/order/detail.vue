@@ -86,7 +86,7 @@
 			<view class="border-bottom" style="padding-top:5rpx"></view>
 		</view>
 		<view v-if="item.IsNeedServiceFee == 1">
-			<view class="d-flex flex-row a-center j-end mr-5 mt">{{'￥'+(item.Amount-item.ServiceFee)}}</view>
+			<view class="d-flex flex-row a-center j-end mr-5 mt">{{'￥'+item.AmountNoServiceFee}}</view>
 			<view class="d-flex flex-row a-center j-end mr-5 mt">{{'服务费：￥'+item.ServiceFee}}</view>
 		</view>
 		<view class="d-flex flex-row a-center j-end mr-5 mt" >

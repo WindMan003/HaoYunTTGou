@@ -45,7 +45,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="d-flex a-center j-center mt-3" style="height: 100rpx;" v-if="merchantStatus.IsNeedServiceFee == 1 && !isshenhe">
+			<view class="d-flex a-center j-center mt-3" style="height: 100rpx;" v-if="merchantStatus.IsNeedServiceFee == 1 && !isshenhe && OrderID == 0">
 				<view class="d-flex a-center flex-row rounded-10 bg-white position-relative" style="width: 94%; height: 100rpx;">
 					<view class="ml-3 font-32 font-weight" style="width: 40%;">
 						用餐人数
@@ -138,9 +138,10 @@
 		methods:{
 			...mapMutations([
 				'clearCartList',
+				'updateOrderID',
+				'updateCartId'
 			]),
 			...mapActions([
-				'updateCartIdFunc'
 			]),
 			userCountInput(e){
 				this.userCount = e.detail.value
@@ -189,7 +190,7 @@
 			},
 			submitOrder(){
 				let _self = this;
-				if(_self.merchantStatus.IsNeedServiceFee == 1 && _self.userCount < 1){
+				if(_self.merchantStatus.IsNeedServiceFee == 1 && _self.userCount < 1 && _self.OrderID == 0){
 					uni.showToast({title: '请输入正确的用餐人数', icon: 'none', duration: 1500})
 					return
 				}
@@ -222,7 +223,8 @@
 						_self.$Common.showToast(res)
 						setTimeout(()=>{
 							_self.isClick = true
-							_self.updateCartIdFunc(0)
+							_self.updateOrderID(0)
+							_self.updateCartId(0)
 							_self.clearCartList()
 							if(res.data.IsMustPayfirst == 1){
 								uni.redirectTo({

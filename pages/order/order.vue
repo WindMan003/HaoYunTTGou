@@ -19,29 +19,34 @@
 					<scroll-view :style="'height:' + scrollH + 'px;'" scroll-y="true" @scrolltolower="loadMore">
 						<template v-if="item.list.length > 0">
 							<view class="order-item" v-for="(data, index) in item.list" :key="index">
-								<view class="font-weight border-bottom pb-1">{{ data.MerchantName }}>></view>
-		
+								<view class="d-flex flex-row border-bottom j-sb">
+									<view class="font-weight pb-1">店铺：{{ data.MerchantName }}</view>
+									<view class="rounded-10 pl-1 pr-1 text-OrangeRed">{{ data.StatusName }}</view>
+								</view>
 								<view @click="openOrderDetail(data.ID)" class="pt-1">
-									<view class="">
+									<view>
+										<text>订单号：</text>
+										<text>{{ data.ID }}</text>
+									</view>
+									<view>
 										<text>下单时间：</text>
 										<text>{{ data.CreateTime }}</text>
 									</view>
 									<view>
-										<text>订单号：</text>
-										<text>{{ data.ID }}</text>
-										<text class="ml-3">订单状态：</text>
-										<text>{{ data.StatusName }}</text>
-									</view>
-									<view>
 										<text>订单金额：</text>
 										<text class="main-text-color">{{ data.Amount }}</text>
-										<text class="ml-3">实付款：</text>
+									</view>
+									<view>
+										<text class="">实付款：</text>
 										<text class="main-text-color">{{ data.PayAmount }}</text>
 									</view>
 								</view>
-								<view class="text-right">
-									<button v-if="data.Status == 0" size="mini" type="primary" @click="cancelOrder(data.ID)">取消</button>
-									<button v-else-if="data.Status == 1 || data.Status == 2" size="mini" type="primary" 
+								<view class="text-right mt-1">
+									<button class="" v-if="data.Status == 0 || data.Status == 1" size="mini" type="primary"  @click="addMore(data.ID)">
+										继续添加
+									</button>
+									<button class="ml-2" v-if="data.Status == 0" size="mini" type="primary" @click="cancelOrder(data.ID)">取消</button>
+									<button class="ml-2" v-else-if="data.Status == 1 || data.Status == 2" size="mini" type="primary" 
 									@click="goToPay(data)">去付款</button>
 								</view>
 							</view>
@@ -91,7 +96,9 @@ export default {
 	},
 	computed:{
 		...mapState({
-			appConfig:state=>state.user.appConfig
+			appConfig:state=>state.user.appConfig,
+			merchantID:state=>state.merchant.merchantID,
+			tableID:state=>state.merchant.tableID
 		}),
 		...mapGetters([
 		]),
@@ -99,7 +106,12 @@ export default {
 	methods: {
 		...mapMutations([
 			'updateCartId',
-			'updateOrderID'
+			'updateOrderID',
+			'clearCartList',
+			'initID'
+		]),
+		...mapActions([
+			'updateCartIdFunc'
 		]),
 		loadTabBars() {
 			this.$H.post('/api/Order/GetOrderStatus', {}, options).then(res => {
@@ -224,6 +236,28 @@ export default {
 			}
 			uni.navigateTo({
 				url:'../payment/payment-pay?price='+m_price+'&orderID='+m_item.ID,
+			})
+		},
+		addMore(orderID){
+			var _self = this;
+			_self.$H.post('/api/Merchant/CreateShoppingCart',{
+				MerchantID: _self.merchantID,
+				TableID: _self.tableID
+			},{
+				token:true
+			}).then(res=>{
+				console.log(res)
+				if(res.status == 0){
+					_self.clearCartList()
+					_self.updateOrderID(orderID)
+					_self.updateCartIdFunc(res.data.CartID)
+					_self.initID(res.data.ID)
+					uni.switchTab({
+						url:'../index/index'
+					})
+				}else{
+					_self.$Common.showToast(res)
+				}
 			})
 		},
 		refreshList() {

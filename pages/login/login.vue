@@ -25,7 +25,7 @@
 		data() {
 			return {
 				isShenhe: false,
-				shenheVersion: '1.0.10',
+				shenheVersion: '1.0.12',
 			}
 		},
 		computed:{
@@ -94,6 +94,8 @@
 					console.log(res)
 					if(res.status == 0){
 						_self.initAppconfig(res.data)
+						console.log(res.data.isWxShenhe)
+						console.log(_self.shenheVersion)
 						if(res.data.isWxShenhe == _self.shenheVersion){
 							console.log('shenhe')
 							_self.isShenhe = true
