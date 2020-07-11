@@ -27,9 +27,7 @@
 			
 			// #ifdef APP-PLUS
 			var _self = this
-			var currentWebview = this.$scope.$getAppWebview()
-			//此对象相当于html5plus里的plus.webview.currentWebview()。
-			//在uni-app里vue页面直接使用plus.webview.currentWebview()无效，非v3编译模式使用this.$mp.page.$getAppWebview()
+			var currentWebview = this.$scope.$getAppWebview() //注意：此方法仅 App 支持
 			setTimeout(function() {
 				let wv = currentWebview.children()[0]
 				let data = {}

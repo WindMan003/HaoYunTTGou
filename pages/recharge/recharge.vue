@@ -105,7 +105,6 @@
 				this.price = e.detail.value
 			},
 			getWebview(wvid){
-				console.log('11111111111111')
 				for (let i = 0; i < this.webview.length; i++) {
 					console.log(this.webview[i].wvid)
 					console.log(wvid)

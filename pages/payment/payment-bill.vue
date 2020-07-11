@@ -16,7 +16,7 @@
 					<input class="" style="height: 80rpx;" v-model="buyCoinText" type="number" placeholder="请输入" @input="buyCoinInput"/>
 				</view>
 				<view class="d-flex flex-row a-center pb-1 font-24 text-muted">
-					<view class="ml-2" v-if="isBuyCoinEnough">可用余额 {{buyCoin}}</view>
+					<view class="ml-2 text-Orange" v-if="isBuyCoinEnough">可用余额 {{buyCoin}}</view>
 					<view class="ml-2" style="color: red;" v-else>*超出可用余额</view>
 				</view>
 			</view>
@@ -27,7 +27,7 @@
 					<input class="" style="height: 80rpx;" v-model="luckyCoinText" type="number" placeholder="请输入" @input="luckyCoinInput"/>
 				</view>
 				<view class="d-flex flex-row a-center pb-1 font-24 text-muted">
-					<view class="ml-2" v-if="isLuckyCoinEnough">可用余额 {{luckyCoin}}</view>
+					<view class="ml-2 text-Orange" v-if="isLuckyCoinEnough">可用余额 {{luckyCoin}}</view>
 					<view class="ml-2" style="color: red;" v-else>*超出可用余额</view>
 				</view>
 			</view>
@@ -48,7 +48,7 @@
 			
 			<view class="w-100 d-flex a-center j-center mt-4">
 				<view class="font-38 btn-orange-white rounded-10 pt-1 pb-1 border text-center" 
-				style="width: 75%;" @click="payBill">支付{{payAmount}}元</view>
+				style="width: 75%;" @click="checkIsOverflow">支付{{payAmount}}元</view>
 			</view>
 		</view>
 	</view>
@@ -81,7 +81,8 @@
 				voucherIDs: '',
 				isBuyCoinEnough: true,
 				isLuckyCoinEnough: true,
-				showSale: false
+				showSale: false,
+				isOverflow: false
 			}
 		},
 		onLoad: function(option){
@@ -191,6 +192,7 @@
 				this.voucherIDs = tempIDs
 			},
 			getPayAmount(){
+				this.isOverflow = false;
 				this.saleAmount = 0
 				this.payAmount = this.amount
 				if(this.luckyCoinText > 0){
@@ -209,9 +211,31 @@
 					this.showSale = false
 				}
 				
+				if(this.payAmount < 0) {
+					this.isOverflow = true;
+					this.payAmount = 0;
+				}
 				this.saleAmount = Number(this.saleAmount).toFixed(2)
 				this.payAmount = Number(this.payAmount).toFixed(2)
-				if(this.payAmount < 0) this.payAmount = 0;
+			},
+			checkIsOverflow(){
+				let _self = this
+				if(this.isOverflow){
+					uni.showModal({
+					    title: '提示',
+					    content: '使用优惠金额超出订单金额，确定继续支付？',
+					    success: function (res) {
+					        if (res.confirm) {
+					            console.log('用户点击确定');
+								_self.payBill()
+					        }else if (res.cancel) {
+								console.log('用户点击取消');
+							}
+					    }
+					});
+				}else{
+					_self.payBill()
+				}
 			},
 			payBill(){
 				let _self = this
@@ -223,7 +247,8 @@
 					})
 					return
 				}
-				
+				if(_self.luckyCoinText == '') _self.luckyCoinText = 0;
+				if(_self.buyCoinText == '') _self.buyCoinText = 0;
 				uni.showLoading({title: '结算中...'})
 				let postData = {
 					OrderID: _self.orderID,
@@ -231,15 +256,31 @@
 					UseBuyCoin: _self.buyCoinText,
 					UseVoucherIDs: _self.voucherIDs
 				}
+				console.log(postData)
 				_self.$H.post('/api/order/PayBill', postData, {
 					token:true
 				}).then(res=>{	
 					console.log(res)
 					uni.hideLoading()
 					if(res.status == 0){
-						uni.redirectTo({
-							url: './payment-pay?price=' + res.data.PayAmount + '&orderID=' + _self.orderID
-						})
+						if(res.data.PayAmount == 0){
+							uni.showModal({
+							    title: '提示',
+							    content: '支付成功',
+								showCancel: false,
+							    success: function (res) {
+							        if (res.confirm) {
+							            uni.navigateBack({
+							            	delta: 1
+							            })
+							        }
+							    }
+							});
+						}else{
+							uni.redirectTo({
+								url: './payment-pay?price=' + res.data.PayAmount + '&orderID=' + _self.orderID
+							})
+						}
 					}else{
 						_self.$Common.showToast(res)
 					}
