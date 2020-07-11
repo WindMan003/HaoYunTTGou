@@ -99,11 +99,21 @@
 					animationDuration: 200
 				});
 			},
-			gotoPay(m_price, m_orderID) {
-				console.log('aaaaaaaaaaaaa')
-				uni.navigateTo({
-					url:'../../pages/payment/payment-pay?price='+m_price+'&orderID='+m_orderID,
-				})
+			gotoPay(m_item) {
+				let m_price = m_item.Amount
+				if(m_item.Status == 2){
+					m_price = m_item.PayAmount
+					console.log(m_price)
+				}
+				if(m_item.Status == 1){
+					uni.navigateTo({
+						url:'../../pages/payment/payment-bill?price='+m_price+'&orderID='+m_item.ID,
+					})
+				}else if(m_item.Status == 2){
+					uni.navigateTo({
+						url:'../../pages/payment/payment-pay?price='+m_price+'&orderID='+m_item.ID,
+					})
+				}
 			},
 		}
 	}

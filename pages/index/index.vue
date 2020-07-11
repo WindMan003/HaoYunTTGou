@@ -1,13 +1,18 @@
 <template>
 	<view class="main">
-		<view class="w-100 main-bg-color border-bottom position-relative" style="height: 80rpx;">
+		<view class="d-flex flex-row w-100 main-bg-color border-bottom" style="height: 80rpx;">
 			<view class="d-flex flex-row">
-				<view class="d-flex flex-row a-center j-center font-32"
-				style="width: 120rpx; height: 80rpx;"
+				<view class="d-flex flex-row j-center a-center font-32" style="width: 120rpx; height: 80rpx;"
 				v-for="(item,index) in tabs" :key="index" @tap="changeTab(index)">
 					<text :class="tabIndex === index ? 'border-bottom-6 font-weight':'main-text-color'">
 						{{item.name}}
 					</text>
+				</view>
+			</view>
+			<view class="d-flex flex-row w-100 a-center j-end">
+				<view class="border pl-2 pr-2 rounded-10 mr-3 font-30" @click="collectionTouch"
+				:style="collection ? '':'background-color: #007AFF; color: #FFFFFF;'">
+					{{getCollectionText}}
 				</view>
 			</view>
 		</view>
@@ -141,7 +146,7 @@
 				</block>
 			</swiper-item>
 			<swiper-item>
-				<merchant ref="merchantRef"></merchant>
+				<merchant-info ref="merchantRef"></merchant-info>
 			</swiper-item>
 			<swiper-item>
 				<!-- 公告 -->
@@ -160,7 +165,7 @@
 	import createCartidPopup from "@/components/cart/create-cartid-popup.vue"
 	import notice from "@/components/notice/notice.vue"
 	import uniBadge from "@/components/uni-badge/uni-badge.vue"
-	import merchant from "@/components/merchant/merchant.vue"
+	import merchantInfo from "@/components/merchantinfo/merchantinfo.vue"
 	import websocket from "@/common/lib/websocket.js"
 	
 	import {mapState,mapGetters,mapActions,mapMutations} from "vuex"
@@ -172,7 +177,7 @@
 			goodsPopup,
 			cartPopup,
 			createCartidPopup,
-			merchant,
+			merchantInfo,
 			notice,
 			uniBadge
 		},
@@ -194,6 +199,7 @@
 				sizeCalcState: false,
 				isFirst: true,
 				cartIsOpen: false,
+				collection: false,
 				//tabs
 				tabs: [
 					{name:'商品'},
@@ -239,6 +245,13 @@
 					tempFilePaths.push(temp[i].TitleImgUrl)
 				}
 				return tempFilePaths
+			},
+			getCollectionText(){
+				if(this.collection){
+					return '已收藏'
+				}else{
+					return '收藏'
+				}
 			},
 		},
 		methods: {
@@ -304,14 +317,54 @@
 				var postData = { 
 					id: _self.merchantID
 				}
-				_self.$H.post('/api/merchant/Intro', postData).then(res=>{
+				_self.$H.post('/api/merchant/Intro', postData, {
+					token:true,
+				}).then(res=>{
 					console.log(res)
 					if(res.status == 0){
 						_self.updateMerchantInfo(res.data)
+						_self.getIsCollection()
 						//初始化商家信息
-						_self.$refs.merchantRef.initMerchantInfo(_self.swiperH)
+						_self.$refs.merchantRef.initMerchantInfo(_self.swiperH, _self.merchantID)
 						//初始化公告信息
-						_self.$refs.noticeRef.initNoticeList(_self.swiperH)
+						_self.$refs.noticeRef.initNoticeList(_self.swiperH, _self.merchantID)
+					}
+				})
+			},
+			//获取用户是否收藏商家
+			getIsCollection(){
+				var _self = this
+				var postData = { 
+					MerchantID: _self.merchantID
+				}
+				_self.$H.post('/api/Merchant/IsCollectioned', postData, {
+					token:true,
+				}).then(res=>{
+					console.log(res)
+					if(res.status == 0){
+						if(res.data == 1){
+							_self.collection = true
+						}else{
+							_self.collection = false
+						}
+					}else{
+						
+					}
+				})
+			},
+			collectionTouch(){
+				var _self = this
+				var postData = { 
+					MerchantID: _self.merchantID
+				}
+				_self.$H.post('/api/Merchant/Collection', postData, {
+					token:true,
+				}).then(res=>{
+					console.log(res)
+					if(res.status == 0){
+						_self.collection = true
+					}else{
+						_self.$Common.showToast(res)
 					}
 				})
 			},
@@ -356,7 +409,6 @@
 				}else{
 					uni.showToast({title: '您还没有点餐', icon: 'none', duration: 1500})
 				}
-
 			},
 			changeTab(index){
 				this.tabIndex = index

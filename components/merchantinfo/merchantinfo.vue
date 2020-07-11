@@ -19,7 +19,7 @@
 					<image :src="url" style="max-width: 600rpx;" lazy-load="true" mode="widthFix"></image>
 				</view>
 			</view>
-			<view class="" style="height: 30rpx;"></view>
+			<view class="" style="height: 100rpx;"></view>
 		</scroll-view>
 	</view>
 </template>
@@ -39,18 +39,16 @@
 		},
 		computed:{
 			...mapState({
-				merchantID:state=>state.merchant.merchantID
 			})
 		},
 		methods: {
-			initMerchantInfo(scrollH){
+			initMerchantInfo(scrollH, merchantID){
 				var _self = this
 				_self.scrollH = scrollH
-				var postData = { id: _self.merchantID }
+				var postData = { id: merchantID }
 				_self.$H.post('/api/merchant/Intro', postData, {
 					token:true,
 				}).then(res=>{
-					console.log('initMerchantInfo')
 					console.log(res)
 					_self.item = res.data
 				})

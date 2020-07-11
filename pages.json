@@ -32,13 +32,18 @@
 		{
             "path" : "pages/payment/payment",
             "style" : {
-				"navigationBarTitleText": "订单详情"
+				"navigationBarTitleText": "提交订单"
+			}
+        },{
+            "path" : "pages/payment/payment-bill",
+            "style" : {
+				"navigationBarTitleText": "支付确认"
 			}
         },
 		{
 		    "path" : "pages/payment/payment-pay",
 		    "style" : {
-				"navigationBarTitleText": "支付订单"
+				"navigationBarTitleText": "支付"
 			}
 		}
         ,{
@@ -48,6 +53,38 @@
         ,{
             "path" : "pages/note/note",
             "style" : {}
+        }
+		,{
+		    "path" : "pages/webview/webview",
+		    "style" : {}
+		}
+		,{
+		    "path" : "pages/webview/webview-jump",
+		    "style" : {}
+		}
+        ,{
+            "path" : "pages/activity/activity",
+            "style" : {}
+        }
+		,{
+		    "path" : "pages/activity/activity-newmerchant",
+		    "style" : {}
+		}
+        ,{
+            "path" : "pages/merchant/merchant",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/recharge/recharge",
+            "style" : {
+				"navigationBarTitleText": "充值"
+			}
+        }
+        ,{
+            "path" : "pages/coupons/coupons",
+            "style" : {
+				"navigationBarTitleText": "商家代金券"
+			}
         }
     ],
 	"globalStyle": {
@@ -73,13 +110,21 @@
 				"text":"订单",
 				"iconPath":"static/tabbar/class.png",
 				"selectedIconPath":"static/tabbar/classSelected.png"
+			},
+			{
+				"pagePath":"pages/activity/activity",
+				"text":"活动",
+				"iconPath":"static/tabbar/activity.png",
+				"selectedIconPath":"static/tabbar/activitySelected.png"
+			},
+			{
+				"pagePath":"pages/my/my",
+				// "pagePath":"pages/merchant/merchant",
+				// "pagePath":"pages/recharge/recharge",
+				"text":"我的",
+				"iconPath":"static/tabbar/my.png",
+				"selectedIconPath":"static/tabbar/mySelected.png"
 			}
-			// {
-			// 	"pagePath":"pages/my/my",
-			// 	"text":"我的",
-			// 	"iconPath":"static/tabbar/my.png",
-			// 	"selectedIconPath":"static/tabbar/mySelected.png"
-			// }
 		]
 	}
 }

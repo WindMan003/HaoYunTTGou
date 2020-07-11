@@ -8,7 +8,10 @@ export default {
 		
 		appConfig:false,
 		signkey:'_qwe57812HGGas_iii87idFF425',
-		isshenhe: true
+		isshenhe: true,
+		
+		webview: [],
+		couponsList: []
 	},
 	mutations:{
 		// 初始化数据
@@ -50,7 +53,21 @@ export default {
 		
 		initIsShenhe(state, m_shenhe){
 			state.isshenhe = m_shenhe
-		}
+		},
+		
+		initWebview(state, webview){
+			for (let i = 0; i < state.webview.length; i++) {
+				if(webview.wvid == state.webview[i].wvid){
+					state.webview[i] = webview
+					return
+				}
+			}
+			state.webview.push(webview)
+		},
+		
+		initCouponsList(state, m_list){
+			state.couponsList = m_list
+		},
 	},
 	actions:{
 		// 登录

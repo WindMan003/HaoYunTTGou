@@ -103,7 +103,7 @@
 				isClick: true,
 				userCount: 0,
 				oldPrice: 0,
-				totalPrice: 0
+				totalPrice: 0,
 			}
 		},
 		onLoad: function(option){
@@ -228,7 +228,7 @@
 							_self.clearCartList()
 							if(res.data.IsMustPayfirst == 1){
 								uni.redirectTo({
-									url:'./payment-pay?price='+_self.totalPrice+'&orderID='+res.data.OrderID
+									url:'./payment-bill?price='+_self.totalPrice+'&orderID='+res.data.OrderID,
 								})
 							}else{
 								uni.navigateBack({

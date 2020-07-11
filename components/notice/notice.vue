@@ -14,6 +14,7 @@
 						@clickLoadMore="clickLoadMore"></uni-load-more>
 				</view>
 			</card>
+			<view class="" style="height: 100rpx;"></view>
 		</scroll-view>
 	</refresh>
 </template>
@@ -33,6 +34,7 @@
 		},
 		data() {
 			return {
+				merchantID: 0,
 				status: 'more',
 				pageSize: 15,
 				pageIndex: 1,
@@ -43,7 +45,6 @@
 		},
 		computed:{
 			...mapState({
-				merchantID:state=>state.merchant.merchantID
 			})
 		},
 		methods: {
@@ -60,9 +61,10 @@
 			getDate(dTime) {
 				return this.$Time.dateFormat(new Date(dTime), 'yyyy-MM-dd');
 			},
-			initNoticeList(scrollH, callBack){
+			initNoticeList(scrollH, merchantID, callBack){
 				var _self = this
 				_self.scrollH = scrollH
+				_self.merchantID = merchantID
 				let url = '/api/merchant/NoticeList';
 				let postData = { MerchantID: _self.merchantID, pageSize: _self.pageSize, pageIndex: _self.pageIndex };
 				_self.$H.post(url, postData).then(res => {

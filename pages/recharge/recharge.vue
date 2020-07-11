@@ -1,8 +1,12 @@
 <template>
 	<view class="h-100 position-relative" style="background-color: #F5F5F5;">
-		<view class="bg-white d-flex flex-column a-center j-center" style="height: 200rpx;">
-			<view class="font-36 font-weight">付款金额</view>
-			<view class="mt-1 font-32 font-weight" style="color: #FD6801;">￥{{price}}</view>
+		<view class="bg-white d-flex flex-column">
+			<view class="font-32 mt-3 ml-4">充值金额</view>
+			<view class="p mt-2 ml-4 a-center d-flex flex-row">
+				<view class="font-60">￥</view>
+				<input class="ml-1 font-55" style="height: 60rpx;" type="number" value="" @blur="priceInput"/>
+			</view>
+			<view class="" style="height: 30rpx;"></view>
 		</view>
 		
 		<view class="d-flex flex-row a-center p-1 ml-1" style="height: 60rpx;">支付方式</view>
@@ -46,7 +50,9 @@
 		
 		<view class="w-100 bottom-0 d-flex flex-row position-absolute" style="height: 150rpx; margin-bottom: 150rpx;">
 			<view class="w-100 d-flex a-center j-center mt-3 position-absolute">
-				<view class="font-38 rounded-50 pt-1 pb-1 border text-center btn-orange-white" style="width: 80%;" @click="submitPay">确认支付{{price}}元</view>
+				<view class="font-38 rounded-50 pt-1 pb-1 border text-center" 
+				:style="isClick ? 'background-color: #48D1CC':'background-color: #C8C7CC'"
+				style="width: 80%; color: #FFFFFF; background-color: #48D1CC;" @click="submitPayOrder">确认支付</view>
 			</view>
 		</view>
 	</view>
@@ -65,27 +71,50 @@
 				defaultWx: true,
 				defaultAli: false,
 				price: 0,
-				orderID: 0,
 				isClick: true,
+				wvid: 0,
+				callback: null
 			}
 		},
 		onLoad(option) {
 			console.log(option)
-			this.price = option.price
-			this.orderID = option.orderID
+			this.wvid = option.wvid
+			this.callback = option.callback
+		},
+		onBackPress(options) {
+			let m_webview = this.getWebview(this.wvid)
+			if(m_webview){
+				m_webview.evalJS(this.callback)
+			}
 		},
 		computed:{
 			...mapState({
 				merchantID:state=>state.merchant.merchantID,
+				webview:state=>state.user.webview
 			}),
 			...mapGetters([
 			]),
 		},
 		methods:{
 			...mapMutations([
+				'initWebview'
 			]),
 			...mapActions([
 			]),
+			priceInput(e){
+				this.price = e.detail.value
+			},
+			getWebview(wvid){
+				console.log('11111111111111')
+				for (let i = 0; i < this.webview.length; i++) {
+					console.log(this.webview[i].wvid)
+					console.log(wvid)
+					if(this.webview[i].wvid == wvid){
+						return this.webview[i].webview
+					}
+				}
+				return null
+			},
 			choosePayTypeWx(e){
 				var typeName = e.detail.value
 				if(typeName.length > 0){
@@ -108,37 +137,40 @@
 				}
 				console.log(this.payTypeName)
 			},
-			submitPay(){
+			submitPayOrder(){
 				var _self = this
+				_self.isClick = false
 				if(_self.payTypeName == ''){
 					uni.showToast({title:'请选择支付方式', icon:'none', duration:1500})
 					return
 				}
 				uni.showLoading({title:'提交支付中...', mask:true})
-				_self.$H.post('/api/Order/SelectPayWay',{
-					OrderID: _self.orderID,
-					PayType: 2,
+				_self.$H.post('/api/user/SubmitPayOrder',{
+					Amount: _self.price,
 					PayChannel: 2
 				},{
 					token:true
 				}).then(res=>{	
 					console.log(res)
 					uni.hideLoading()
+					_self.isClick = true
 					if(res.status == 0){
-						_self.goToPay()
+						_self.goToPay(res.data)
 					}else{
 						_self.$Common.showToast(res)
 					}
 				})
 			},
-			goToPay(){
+			goToPay(m_orderID){
 				var _self = this
-				_self.$H.post('/api/pay/CreateWxOrder',{
-					OrderID: _self.orderID
+				_self.isClick = false
+				_self.$H.post('/API/User/CreateUserPayWxOrder',{
+					OrderID: m_orderID
 				},{
 					token:true
 				}).then(res=>{	
 					console.log(res)
+					_self.isClick = true
 					if(res.status == 0){
 						_self.payHandler(res.data)
 					}else{
@@ -166,8 +198,12 @@
 							showCancel: false,
 						    success: function (res) {
 						        if (res.confirm) {
+									let m_webview = that.getWebview(that.wvid)
+									if(m_webview){
+										m_webview.evalJS(that.callback)
+									}
 									uni.navigateBack({
-										delta:2
+										delta: 1
 									})
 						        }
 						    }

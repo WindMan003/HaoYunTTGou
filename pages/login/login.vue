@@ -25,7 +25,8 @@
 		data() {
 			return {
 				isShenhe: false,
-				shenheVersion: '1.0.12',
+				shenheVersion: '1.0.14',
+				isHaveMerID: true
 			}
 		},
 		computed:{
@@ -46,6 +47,7 @@
 			if(option.MerchantID){
 				// 测试直接传入参数
 				console.log('true')
+				this.isHaveMerID = true
 				this.updateMerchantID(option.MerchantID)
 				this.updateTableID(option.TableID)
 				this.updateCartIdFunc(0)
@@ -53,6 +55,7 @@
 			}else{
 				// 没有接收到参数，使用默认参数
 				console.log('false')
+				this.isHaveMerID = false
 				this.updateMerchantID('1')
 				this.updateTableID('1')
 			}
@@ -88,12 +91,16 @@
 				var keyObj = {'websocket':m_math}
 				var keyData = this.$Common.sort_ascii(keyObj, this.signkey)
 				_self.$H.post('/api/config/GetAppConfig',{
-					websocket:m_math,
-					sign:keyData
+					websocket: m_math,
+					sign: keyData
 				}).then(res=>{
 					console.log(res)
 					if(res.status == 0){
 						_self.initAppconfig(res.data)
+						if(!this.isHaveMerID){
+							this.updateMerchantID(res.data.MerchantID)
+							this.updateTableID('1')
+						}
 						console.log(res.data.isWxShenhe)
 						console.log(_self.shenheVersion)
 						if(res.data.isWxShenhe == _self.shenheVersion){

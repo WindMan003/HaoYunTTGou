@@ -176,9 +176,15 @@
 					m_price = m_item.PayAmount
 					console.log(m_price)
 				}
-				uni.navigateTo({
-					url:'../payment/payment-pay?price='+m_price+'&orderID='+m_item.ID,
-				})
+				if(m_item.Status == 1){
+					uni.navigateTo({
+						url:'../payment/payment-bill?price='+m_price+'&orderID='+m_item.ID,
+					})
+				}else if(m_item.Status == 2){
+					uni.navigateTo({
+						url:'../payment/payment-pay?price='+m_price+'&orderID='+m_item.ID,
+					})
+				}
 			}
 		}
 	};
