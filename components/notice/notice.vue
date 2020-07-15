@@ -96,13 +96,14 @@
 				console.log("aaaaaaa")
 				this.pageIndex = this.pageIndex + 1;
 				this.status = 'loading';
-				this.initNoticeList(this.scrollH)
+				this.initNoticeList(this.scrollH, this.merchantID)
 			},
 			//------------------刷新touch监听------------------
 			refreshList() {
+				console.log('111111111111')
 				this.isPullRefresh = true;
 				this.pageIndex = 1;
-				this.initNoticeList(this.scrollH, () => {
+				this.initNoticeList(this.scrollH, this.merchantID, () => {
 					uni.showToast({
 						icon: 'none',
 						title: '刷新成功'
