@@ -1,17 +1,10 @@
 <template>
-	<view class="w-100" style="background-color: #F5F5F5;" :style="'height:'+ windowHeight + 'px'">
-		<scroll-view scroll-y="true" :style="'height:'+ windowHeight + 'px'">
-			<view class="d-flex flex-column a-center">
-				<view class="bg-white rounded-10 mt-3" style="width: 94%;" v-if="!isshenhe">
-					<block v-for="(item, index) in menuList" :key="index">
-						<uni-list-item :title="item.Name" @click="jumpPageView(item)"></uni-list-item>
-					</block>
-				</view>
-				<view class="d-flex flex-column a-center j-center text-muted" :style="'height:'+ windowHeight +'px;'" v-else>
-					暂无开启活动哦~
-				</view>
-			</view>
-		</scroll-view>
+	<view class="d-flex flex-column a-center" style="background-color: #F5F5F5;" :style="'height:'+ windowHeight + 'px'">
+		<view class="d-flex flex-column bg-white rounded-10 mt-3" style="width: 94%;">
+			<block v-for="(item, index) in menuList" :key="index">
+				<uni-list-item :title="item.Name" @click="jumpPageView(item)"></uni-list-item>
+			</block>
+		</view>
 	</view>
 </template>
 
@@ -31,7 +24,7 @@
 					this.windowHeight = res.windowHeight
 				}
 			})
-			this.initMenu()
+			this.menuList = JSON.parse(decodeURIComponent(option.list))
 		},
 		computed:{
 			...mapState({
@@ -40,24 +33,15 @@
 			}),
 		},
 		methods: {
-			initMenu(){
-				var _self = this;
-				_self.$H.post('/api/Config/ActivityMenu',{},{
-					token:true
-				}).then(res=>{	
-					console.log(res)
-					if(res.status == 0){
-						_self.menuList = res.data
-					}else{
-						_self.$Common.showToast(res)
-					}
-				})
-			},
 			jumpPageView(m_item){
+				if(this.isshenhe){
+					uni.showToast({title: "后续开放，尽请期待！", icon: "none", duration: 1500});
+					return false
+				}
 				var nextList = this.getNextMenu(m_item.ID)
 				if(nextList.length > 0){
 					uni.navigateTo({
-						url: './my-next?list=' + encodeURIComponent(JSON.stringify(nextList))
+						url: './prize-next?list=' + encodeURIComponent(JSON.stringify(nextList))
 					})
 				}else{
 					if(m_item.IsWebView == 1){

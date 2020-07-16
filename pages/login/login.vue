@@ -25,7 +25,7 @@
 		data() {
 			return {
 				isShenhe: false,
-				shenheVersion: '1.0.14',
+				shenheVersion: '1.0.16',
 				isHaveMerID: true
 			}
 		},

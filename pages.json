@@ -24,10 +24,16 @@
 			"style": {
 				"navigationBarTitleText": "订单明细"
 			}
-		}
-        ,{
+		},{
             "path" : "pages/my/my",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "我的"
+			}
+        },{
+            "path" : "pages/my/my-next",
+            "style" : {
+				"navigationBarTitleText": "我的"
+			}
         },
 		{
             "path" : "pages/payment/payment",

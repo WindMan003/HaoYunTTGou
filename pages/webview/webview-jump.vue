@@ -22,7 +22,7 @@
 		onLoad:function(option) {
 			console.log(option)
 			
-			this.jumpurl = option.jumpurl
+			this.jumpurl = option.jumpurl  + '?token=' + encodeURIComponent(this.token)
 			this.wvid = option.wvid
 			
 			// #ifdef APP-PLUS
@@ -39,7 +39,8 @@
 		},
 		computed:{
 			...mapState({
-				webview:state=>state.user.webview
+				webview:state=>state.user.webview,
+				token:state=>state.user.token
 			}),
 		},
 		methods: {

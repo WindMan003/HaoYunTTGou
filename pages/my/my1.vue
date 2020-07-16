@@ -1,8 +1,8 @@
 <template>
-	<view class="d-flex flex-column a-center" style="background-color: #F5F5F5;" :style="'height:'+ windowHeight + 'px'">
-		<web-view v-if="!isshenhe" :webview-styles="webviewStyles" :src="getLink" @message="handleMessage"></web-view>
+	<view>
+		<web-view v-if="!isshenhe" :webview-styles="webviewStyles" :src="link" @message="handleMessage"></web-view>
 		<view class="d-flex flex-column a-center j-center text-muted" :style="'height:'+windowHeight+'px;'" v-else>
-			暂无开启活动哦~
+			期待后续更新哦~
 		</view>
 	</view>
 </template>
@@ -28,24 +28,18 @@
 					this.windowHeight = res.windowHeight
 				}
 			})
+			this.link = this.appConfig.UserWebSite + '/User/Menu' + '?token=' + encodeURIComponent(this.token)
+			console.log(this.link)
 		},
 		computed:{
 			...mapState({
 				appConfig:state=>state.user.appConfig,
 				token:state=>state.user.token,
-				merchantID:state=>state.merchant.merchantID,
 				isshenhe:state=>state.user.isshenhe
 			}),
-			getLink(){
-				let link = this.appConfig.UserWebSite + '/Merchant/Activity/' + this.merchantID + '?token=' + encodeURIComponent(this.token)
-				console.log(link)
-				return link
-			}
 		},
 		methods: {
-			handleMessage(evt) {
-				console.log('接收到的消息：' + JSON.stringify(evt.detail)); 
-			}
+			
 		}
 	}
 </script>

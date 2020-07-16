@@ -6,7 +6,8 @@ export default {
 		sessionID:false,
 		userSite:false,
 		
-		appConfig:false,
+		appConfig: [],
+		userWebSite: '',
 		signkey:'_qwe57812HGGas_iii87idFF425',
 		isshenhe: true,
 		
@@ -48,6 +49,7 @@ export default {
 		initAppconfig(state, appConfig){
 			if(appConfig){
 				state.appConfig = appConfig
+				state.userWebSite = appConfig.UserWebSite
 			}
 		},
 		
