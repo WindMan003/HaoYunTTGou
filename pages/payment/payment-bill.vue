@@ -22,7 +22,7 @@
 			</view>
 			
 			<view class="w-100 border rounded-10 bg-white mt-2">
-				<view class="font-34 ml-2 mt-1">使用幸运币</view>
+				<view class="font-34 ml-2 mt-1">使用账户余额</view>
 				<view class="d-flex flex-row a-center ml-2 mt-1 mb-1">
 					<input class="" style="height: 80rpx;" v-model="luckyCoinText" type="number" placeholder="请输入" @input="luckyCoinInput"/>
 				</view>

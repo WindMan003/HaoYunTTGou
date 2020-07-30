@@ -25,8 +25,9 @@
 		data() {
 			return {
 				isShenhe: false,
-				shenheVersion: '1.0.16',
-				isHaveMerID: true
+				shenheVersion: '1.0.15',
+				isHaveMerID: true,
+				MerchantID: ''
 			}
 		},
 		computed:{
@@ -48,6 +49,7 @@
 				// 测试直接传入参数
 				console.log('true')
 				this.isHaveMerID = true
+				this.MerchantID = option.MerchantID
 				this.updateMerchantID(option.MerchantID)
 				this.updateTableID(option.TableID)
 				this.updateCartIdFunc(0)
@@ -56,6 +58,7 @@
 				// 没有接收到参数，使用默认参数
 				console.log('false')
 				this.isHaveMerID = false
+				this.MerchantID = 1
 				this.updateMerchantID('1')
 				this.updateTableID('1')
 			}
@@ -97,9 +100,10 @@
 					console.log(res)
 					if(res.status == 0){
 						_self.initAppconfig(res.data)
-						if(!this.isHaveMerID){
-							this.updateMerchantID(res.data.MerchantID)
-							this.updateTableID('1')
+						if(!_self.isHaveMerID){
+							_self.MerchantID = res.data.MerchantID
+							_self.updateMerchantID(res.data.MerchantID)
+							_self.updateTableID('1')
 						}
 						console.log(res.data.isWxShenhe)
 						console.log(_self.shenheVersion)
@@ -152,7 +156,8 @@
 									AvatarUrl:infoRes.userInfo.avatarUrl,
 									NickName:infoRes.userInfo.nickName,
 									City:infoRes.userInfo.city,
-									Province:infoRes.userInfo.province
+									Province:infoRes.userInfo.province,
+									MerchantID: _self.MerchantID
 								}).then(res=>{
 									console.log(res)
 									uni.hideLoading()
@@ -185,6 +190,16 @@
 				uni.switchTab({
 					url:'../index/index'
 				})
+				// var m_bool = true
+				// if(m_bool){
+				// 	uni.switchTab({
+				// 		url:'../index/index'
+				// 	})
+				// }else{
+				// 	uni.navigateTo({
+				// 		url:"../location/location"
+				// 	})
+				// }
 			}
 		}
 	}

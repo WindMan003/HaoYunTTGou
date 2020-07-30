@@ -92,7 +92,16 @@
 				"navigationBarTitleText": "商家代金券"
 			}
         }
+        ,{
+            "path" : "pages/location/location",
+            "style" : {}
+        }
     ],
+	"permission": {
+	    "scope.userLocation": {
+	      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+	    }
+	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",

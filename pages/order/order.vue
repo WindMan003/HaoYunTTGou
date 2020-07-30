@@ -33,12 +33,16 @@
 										<text>{{ data.CreateTime }}</text>
 									</view>
 									<view>
+										<text>桌号：</text>
+										<text>{{ data.TableNumber }}</text>
+									</view>
+									<view>
 										<text>订单金额：</text>
-										<text class="main-text-color">{{ data.Amount }}</text>
+										<text class="text-price">￥{{ data.Amount }}</text>
 									</view>
 									<view>
 										<text class="">实付款：</text>
-										<text class="main-text-color">{{ data.PayAmount }}</text>
+										<text class="text-price">￥{{ data.PayAmount }}</text>
 									</view>
 								</view>
 								<view class="text-right mt-1">
@@ -149,6 +153,7 @@ export default {
 			};
 			item.loadTag = 'ing';
 			this.$H.post('/api/Order/list', postData, options).then(res => {
+				console.log(res)
 				if (this.isPullRefresh) {
 					item.list = res.data;
 					this.isPullRefresh = false;

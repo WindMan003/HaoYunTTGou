@@ -7,7 +7,7 @@
 			</view>
 			<view style="width: 50%;">
 				<text>订单状态：</text>
-				<text class="main-text-color">{{ item.StatusName }}</text>
+				<text class="text-OrangeRed">{{ item.StatusName }}</text>
 			</view>
 		</view>
 		<view class="d-flex flex-row" v-if="item.IsNeedServiceFee == 1">
@@ -21,8 +21,12 @@
 			</view>
 		</view>
 		<view>
+			<text>桌号：</text>
+			<text>{{item.TableNumber}}</text>
+		</view>
+		<view>
 			<text>订单金额：</text>
-			<text style="color: #FF582B;">{{ '￥'+item.Amount }}</text>
+			<text class="text-price">{{ '￥'+item.Amount }}</text>
 		</view>
 		<view v-if="item.UserNote != ''">
 			<text>备注：</text>
@@ -33,7 +37,7 @@
 			<text class="main-text-color">{{ item.UseVoucherAmount }}</text>
 		</view>
 		<view v-if="item.UseLuckyCoin > 0">
-			<text>使用幸运币：</text>
+			<text>使用账户余额：</text>
 			<text class="main-text-color">{{ item.UseLuckyCoin }}</text>
 		</view>
 		<view v-if="item.UseBuyCoin > 0">
@@ -42,7 +46,7 @@
 		</view>
 		<view v-if="item.Status == 3">
 			<text>实付金额：</text>
-			<text class="main-text-color">{{ item.PayAmount }}</text>
+			<text class="text-price">￥{{ item.PayAmount }}</text>
 		</view>
 		<view class="d-flex flex-row text-right" style="height: 90rpx;">
 			<view class="position-absolute" style="right: 20rpx;">

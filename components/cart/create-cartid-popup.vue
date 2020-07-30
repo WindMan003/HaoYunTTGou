@@ -2,13 +2,13 @@
 	<uni-popup type="center" ref="popup" className="uni-popup__wrapper-box-goods-spec">
 		<view class="d-flex flex-column w-100" style="height: 500rpx; background-color: #FFFFFF; border-radius: 3%;">
 			<view class="w-100 border-bottom text-center font-36 font-weight mt-2" style="height: 90rpx">
-				加入/创建购物车
+				购物车
 			</view>
 			
 			<view class="d-flex j-center mt-3">
 				<view class="p-1" style="width: 35%;">
 					<input class="text-center border-bottom font-28" type="number" :value="inputCartId"
-					 placeholder="输入4位购物车ID" maxlength="4" @input="cartIdInput"/>
+					 placeholder="输入购物车ID" maxlength="4" @input="cartIdInput"/>
 				</view>
 				
 <!-- 				<view class="border text-center font-28 font-weight p"
@@ -28,14 +28,14 @@
 			<view class="d-flex a-center j-center mt-5 flex-row j-sa">
 				<view class="border text-center font-36 font-weight p-1" 
 				style="background: #FFA500; border-radius: 10rpx; width: 200rpx; color: #FFFFFF;"
-				@click="createCart">
-					创建
+				@click="joinCart">
+					加入
 				</view>
 				
 				<view class="border text-center font-36 font-weight p-1"
 				style="background: #FFA500; border-radius: 10rpx; width: 200rpx; color: #FFFFFF;"
-				@click="joinCart">
-					加入
+				@click="createCart">
+					点餐
 				</view>
 			</view>
 		</view>
