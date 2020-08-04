@@ -100,11 +100,6 @@
 					console.log(res)
 					if(res.status == 0){
 						_self.initAppconfig(res.data)
-						if(!_self.isHaveMerID){
-							_self.MerchantID = res.data.MerchantID
-							_self.updateMerchantID(res.data.MerchantID)
-							_self.updateTableID('1')
-						}
 						console.log(res.data.isWxShenhe)
 						console.log(_self.shenheVersion)
 						if(res.data.isWxShenhe == _self.shenheVersion){
@@ -131,7 +126,7 @@
 					if(res.status == 0){
 						//存储用户信息
 						_self.login(res.data)
-						_self.gotoIndex()
+						_self.getDefaultMerchantID()
 					}
 				})
 			},
@@ -164,7 +159,7 @@
 									if(res.status == 0){
 										//存储用户信息
 										_self.login(res.data)
-										_self.gotoIndex()
+										_self.getDefaultMerchantID()
 									}
 								})
 							}
@@ -185,7 +180,26 @@
 				
 				this.weixinLogin()
 			},
-			
+			getDefaultMerchantID(){
+				var _self = this;
+				if(!_self.isHaveMerID){
+					_self.$H.post('/api/Merchant/DefaultMerchantID', {}, {
+						token:true,
+					}).then(res=>{
+						console.log(res)
+						if(res.status == 0){
+							_self.MerchantID = res.data
+							_self.updateMerchantID(res.data)
+							_self.updateTableID('1')
+							_self.gotoIndex()
+						}else{
+							_self.$Common.showToast(res)
+						}
+					});
+				}else{
+					_self.gotoIndex()
+				}
+			},
 			gotoIndex(){
 				uni.switchTab({
 					url:'../index/index'

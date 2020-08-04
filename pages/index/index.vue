@@ -258,7 +258,8 @@
 			...mapMutations([
 				'updateCartGoodsList',
 				'updateMerchantInfo',
-				'updateMerchantStatus'
+				'updateMerchantStatus',
+				'updateMerchantID'
 			]),
 			...mapActions([
 				'updateAllGoodsListFunc',
@@ -342,13 +343,26 @@
 				}).then(res=>{
 					console.log(res)
 					if(res.status == 0){
-						if(res.data == 1){
+						if(res.data.Collectioned == 1){
 							_self.collection = true
 						}else{
 							_self.collection = false
+							if(res.data.OpenGiveBuyCoin == 1){
+								uni.showModal({
+									title: '提示',
+									content: '首次收藏商家可以获得' + res.data.BuyCoin + '元代金币',
+									success: function (res) {
+										if(res.confirm){
+											_self.collectionTouch()
+										}else if(res.cancel){
+											console.log('用户点击取消');
+										}
+									}
+								});
+							}
 						}
 					}else{
-						
+						_self.$Common.showToast(res)
 					}
 				})
 			},
@@ -363,6 +377,13 @@
 					console.log(res)
 					if(res.status == 0){
 						_self.collection = true
+						uni.showModal({
+							title: '收藏成功',
+							content: '获得代金币，可以在付款时抵扣！',
+							showCancel: false,
+							success: function (res) {
+							}
+						});
 					}else{
 						_self.$Common.showToast(res)
 					}

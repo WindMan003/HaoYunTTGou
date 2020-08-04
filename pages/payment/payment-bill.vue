@@ -1,55 +1,66 @@
 <template>
-	<view class="d-flex flex-column a-center" style="background-color: #F5F5F5;" :style="'height:'+ windowHeight + 'px'">
-		<view class="" style="width: 94%;">
-			<view class="w-100 border rounded-10 bg-white mt-2 d-flex flex-column a-center">
-				<view class="mt-3 font-36">订单金额</view>
-				<view class="mt-1 font-40 text-price pb-3">￥{{amount}}</view>
-			</view>
-			
-			<view class="w-100 border rounded-10 bg-white mt-2">
-				<uni-list-item title="商家代金券" :showSale="showSale" :rightText="getUserVouchers" @click="coupons"></uni-list-item>
-			</view>
-			
-			<view class="w-100 border rounded-10 bg-white mt-2">
-				<view class="font-34 ml-2 mt-1">使用代金币</view>
-				<view class="d-flex flex-row a-center ml-2 mt-1 mb-1">
-					<input class="" style="height: 80rpx;" v-model="buyCoinText" type="number" placeholder="请输入" @input="buyCoinInput"/>
+	<view class="">
+		<scroll-view scroll-y="true" style="background-color: #F5F5F5;" :style="'height:'+ windowHeight + 'px'">
+			<view class="d-flex flex-column a-center">
+				<view class="" style="width: 94%;">
+					<view class="w-100 border rounded-10 bg-white mt-2 d-flex flex-column a-center">
+						<view class="mt-3 font-36">订单金额</view>
+						<view class="mt-1 font-40 text-price pb-3">￥{{amount}}</view>
+					</view>
+					
+					<view class="w-100 border rounded-10 bg-white mt-2">
+						<uni-list-item title="商家代金券" :showSale="showSale" :rightText="getUserVouchers" @click="coupons"></uni-list-item>
+					</view>
+					
+					<view class="w-100 border rounded-10 bg-white mt-2">
+						<view class="font-34 ml-2 mt-1">使用代金币</view>
+						<view class="d-flex flex-row a-center ml-2 mt-1 mb-1">
+							<input class="" style="height: 80rpx;" v-model="buyCoinText" type="number" placeholder="请输入" @input="buyCoinInput"/>
+						</view>
+						<view class="d-flex flex-row a-center pb-1 font-24 text-muted">
+							<view class="ml-2 text-Orange" v-if="isBuyCoinEnough">可用余额 {{buyCoin}}</view>
+							<view class="ml-2" style="color: red;" v-else>*超出可用余额</view>
+						</view>
+					</view>
+					
+					<view class="w-100 border rounded-10 bg-white mt-2">
+						<view class="font-34 ml-2 mt-1">使用账户余额</view>
+						<view class="d-flex flex-row a-center ml-2 mt-1 mb-1">
+							<input class="" style="height: 80rpx;" v-model="luckyCoinText" type="number" placeholder="请输入" @input="luckyCoinInput"/>
+						</view>
+						<view class="d-flex flex-row a-center pb-1 font-24 text-muted">
+							<view class="ml-2 text-Orange" v-if="isLuckyCoinEnough">可用余额 {{luckyCoin}}</view>
+							<view class="ml-2" style="color: red;" v-else>*超出可用余额</view>
+						</view>
+					</view>
+					
+					<view class="w-100 border rounded-10 bg-white mt-2 d-flex flex-row a-center j-sb p-2" style="width: 94%;">
+						<view class="font-34">满减活动</view>
+						<view class="text-muted">-1.00元</view>
+					</view>
+					
+					<view class="w-100 d-flex flex-row a-center mt-2 j-end">
+						<view class="d-flex flex-row mr-2">
+							<view class="">优惠：</view>
+							<view class="text-price">￥{{saleAmount}}</view>
+						</view>
+					</view>
+					
+					<view class="w-100 d-flex flex-row a-center mt-2 j-end">
+						<view class="d-flex flex-row mr-2">
+							<view class="">合计：</view>
+							<view class="text-price">￥{{payAmount}}</view>
+						</view>
+					</view>
+					
+					<view class="" style="height: 200rpx;"></view>
 				</view>
-				<view class="d-flex flex-row a-center pb-1 font-24 text-muted">
-					<view class="ml-2 text-Orange" v-if="isBuyCoinEnough">可用余额 {{buyCoin}}</view>
-					<view class="ml-2" style="color: red;" v-else>*超出可用余额</view>
-				</view>
 			</view>
-			
-			<view class="w-100 border rounded-10 bg-white mt-2">
-				<view class="font-34 ml-2 mt-1">使用账户余额</view>
-				<view class="d-flex flex-row a-center ml-2 mt-1 mb-1">
-					<input class="" style="height: 80rpx;" v-model="luckyCoinText" type="number" placeholder="请输入" @input="luckyCoinInput"/>
-				</view>
-				<view class="d-flex flex-row a-center pb-1 font-24 text-muted">
-					<view class="ml-2 text-Orange" v-if="isLuckyCoinEnough">可用余额 {{luckyCoin}}</view>
-					<view class="ml-2" style="color: red;" v-else>*超出可用余额</view>
-				</view>
-			</view>
-			
-			<view class="w-100 d-flex flex-row a-center mt-2 j-end">
-				<view class="d-flex flex-row mr-2">
-					<view class="">优惠：</view>
-					<view class="text-price">￥{{saleAmount}}</view>
-				</view>
-			</view>
-			
-			<view class="w-100 d-flex flex-row a-center mt-2 j-end">
-				<view class="d-flex flex-row mr-2">
-					<view class="">合计：</view>
-					<view class="text-price">￥{{payAmount}}</view>
-				</view>
-			</view>
-			
-			<view class="w-100 d-flex a-center j-center mt-4">
-				<view class="font-38 btn-orange-white rounded-10 pt-1 pb-1 border text-center" 
-				style="width: 75%;" @click="checkIsOverflow">支付{{payAmount}}元</view>
-			</view>
+		</scroll-view>
+		
+		<view class="w-100 d-flex a-center j-center mt-4 position-absolute" style="bottom: 0; margin-bottom: 40rpx;">
+			<view class="font-38 btn-orange-white rounded-10 pt-1 pb-1 border text-center" 
+			style="width: 90%;" @click="checkIsOverflow">支付{{payAmount}}元</view>
 		</view>
 	</view>
 </template>
